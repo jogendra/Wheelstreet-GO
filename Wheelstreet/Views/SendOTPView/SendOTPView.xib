@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SendOTPView" customModule="Wheelstreet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="223"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TpQ-MQ-clE">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="223"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qHE-jj-Dvm">
+                            <rect key="frame" x="326" y="8" width="34" height="33"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="Skip">
+                                <color key="titleColor" red="0.35298871990000003" green="0.76788848639999996" blue="0.54764777419999999" alpha="0.97394049660000004" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cwS-UT-eXb">
+                            <rect key="frame" x="15" y="100" width="345" height="2"/>
+                            <color key="backgroundColor" red="0.35298871990000003" green="0.76788848639999996" blue="0.54764777419999999" alpha="0.97394049660000004" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="2" id="RJV-eQ-tM5"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Oz-jF-bgN">
+                            <rect key="frame" x="15" y="120" width="345" height="44"/>
+                            <color key="backgroundColor" red="0.35298871990000003" green="0.76788848639999996" blue="0.54764777419999999" alpha="0.97394049660000004" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="CdT-8i-fnM"/>
+                                <constraint firstAttribute="height" constant="44" id="IRC-jH-p9A"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="Send OTP">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PbK-pU-l0w">
+                            <rect key="frame" x="79" y="183" width="217" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="77T-x4-Imx"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="Sign in using other accounts">
+                                <color key="titleColor" red="0.35298871990000003" green="0.76788848639999996" blue="0.54764777419999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter your mobile number" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="peT-4l-8Vs" customClass="HoshiTextField" customModule="Wheelstreet" customModuleProvider="target">
+                            <rect key="frame" x="15" y="32" width="226" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="3sE-BE-JPm"/>
+                            </constraints>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <textInputTraits key="textInputTraits" keyboardType="numberPad" keyboardAppearance="alert" returnKeyType="done"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="1Oz-jF-bgN" secondAttribute="trailing" constant="15" id="0s6-wG-IfE"/>
+                        <constraint firstItem="peT-4l-8Vs" firstAttribute="leading" secondItem="TpQ-MQ-clE" secondAttribute="leading" constant="15" id="1WU-RB-Eh5"/>
+                        <constraint firstItem="PbK-pU-l0w" firstAttribute="top" secondItem="1Oz-jF-bgN" secondAttribute="bottom" constant="19" id="1yK-aV-vAi"/>
+                        <constraint firstItem="peT-4l-8Vs" firstAttribute="top" secondItem="TpQ-MQ-clE" secondAttribute="top" constant="32" id="6r2-EG-PfT"/>
+                        <constraint firstItem="1Oz-jF-bgN" firstAttribute="top" secondItem="cwS-UT-eXb" secondAttribute="bottom" constant="18" id="8sx-el-ilO"/>
+                        <constraint firstItem="1Oz-jF-bgN" firstAttribute="leading" secondItem="TpQ-MQ-clE" secondAttribute="leading" constant="15" id="E4Z-bF-18p"/>
+                        <constraint firstItem="1Oz-jF-bgN" firstAttribute="centerX" secondItem="cwS-UT-eXb" secondAttribute="centerX" id="Fhr-ca-MgZ"/>
+                        <constraint firstItem="cwS-UT-eXb" firstAttribute="trailing" secondItem="qHE-jj-Dvm" secondAttribute="trailing" id="ILl-89-3WW"/>
+                        <constraint firstItem="cwS-UT-eXb" firstAttribute="leading" secondItem="TpQ-MQ-clE" secondAttribute="leading" constant="15" id="MTG-bG-5ES"/>
+                        <constraint firstItem="cwS-UT-eXb" firstAttribute="centerX" secondItem="TpQ-MQ-clE" secondAttribute="centerX" id="Mol-yk-9bw"/>
+                        <constraint firstAttribute="trailing" secondItem="cwS-UT-eXb" secondAttribute="trailing" constant="15" id="S4Y-59-fhG"/>
+                        <constraint firstItem="PbK-pU-l0w" firstAttribute="centerX" secondItem="TpQ-MQ-clE" secondAttribute="centerX" id="XXI-KG-PlA"/>
+                        <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="peT-4l-8Vs" secondAttribute="trailing" constant="153" id="clI-SS-0R9"/>
+                        <constraint firstItem="1Oz-jF-bgN" firstAttribute="top" secondItem="peT-4l-8Vs" secondAttribute="bottom" constant="44" id="fIV-n5-iTT"/>
+                        <constraint firstItem="cwS-UT-eXb" firstAttribute="top" secondItem="qHE-jj-Dvm" secondAttribute="bottom" constant="59" id="lW4-d9-0wH"/>
+                        <constraint firstItem="1Oz-jF-bgN" firstAttribute="centerX" secondItem="TpQ-MQ-clE" secondAttribute="centerX" id="v21-vY-S3j"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="TpQ-MQ-clE" secondAttribute="trailing" id="6ZG-O5-00h"/>
+                <constraint firstItem="TpQ-MQ-clE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="N0g-KV-cJQ"/>
+                <constraint firstItem="TpQ-MQ-clE" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="bJt-Ur-Nn1"/>
+                <constraint firstItem="TpQ-MQ-clE" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="mM4-d8-szL"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="enterOTPMobileNumberTextField" destination="peT-4l-8Vs" id="vB8-MO-ZEK"/>
+                <outlet property="sendOTPButton" destination="1Oz-jF-bgN" id="D40-9G-0wc"/>
+                <outlet property="signinOtherAccountButton" destination="PbK-pU-l0w" id="05a-5w-6gx"/>
+                <outlet property="skipOTPButton" destination="qHE-jj-Dvm" id="uV8-xf-WlD"/>
+            </connections>
+            <point key="canvasLocation" x="-266" y="68"/>
+        </view>
+    </objects>
+</document>

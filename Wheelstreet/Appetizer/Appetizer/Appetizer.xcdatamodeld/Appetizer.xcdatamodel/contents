@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F71b" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="DailyItems" representedClassName="DailyItems" syncable="YES" codeGenerationType="class">
+        <attribute name="breakfast" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dinner" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lunch" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="menu" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WeekMenuCoreDataObject" inverseName="dailyItems" inverseEntity="WeekMenuCoreDataObject" syncable="YES"/>
+    </entity>
+    <entity name="MealCoreDataObject" representedClassName="MealCoreDataObject" syncable="YES" codeGenerationType="class">
+        <attribute name="extras" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="main_course_dry" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="main_course_liquid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="meal_type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="salads" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="starters" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="day" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WeekDayCoreDataObject" inverseName="meals" inverseEntity="WeekDayCoreDataObject" syncable="YES"/>
+    </entity>
+    <entity name="UserCoreDataObject" representedClassName="UserCoreDataObject" syncable="YES" codeGenerationType="class">
+        <attribute name="branch" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contact_no" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="enr_no" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="first_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hostel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="is_manager" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="is_staff" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="is_verified" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="last_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="room_no" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="WeekDayCoreDataObject" representedClassName="WeekDayCoreDataObject" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="meals" optional="YES" toMany="YES" minCount="1" maxCount="3" deletionRule="Cascade" destinationEntity="MealCoreDataObject" inverseName="day" inverseEntity="MealCoreDataObject" syncable="YES"/>
+        <relationship name="menu" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WeekMenuCoreDataObject" inverseName="days" inverseEntity="WeekMenuCoreDataObject" syncable="YES"/>
+    </entity>
+    <entity name="WeekMenuCoreDataObject" representedClassName="WeekMenuCoreDataObject" syncable="YES" codeGenerationType="class">
+        <attribute name="start_date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="week_id" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="dailyItems" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DailyItems" inverseName="menu" inverseEntity="DailyItems" syncable="YES"/>
+        <relationship name="days" optional="YES" toMany="YES" minCount="1" maxCount="7" deletionRule="Nullify" destinationEntity="WeekDayCoreDataObject" inverseName="menu" inverseEntity="WeekDayCoreDataObject" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="DailyItems" positionX="-2" positionY="-36" width="128" height="105"/>
+        <element name="MealCoreDataObject" positionX="-191" positionY="266" width="128" height="165"/>
+        <element name="UserCoreDataObject" positionX="16" positionY="81" width="128" height="210"/>
+        <element name="WeekDayCoreDataObject" positionX="-200" positionY="117" width="128" height="105"/>
+        <element name="WeekMenuCoreDataObject" positionX="-198" positionY="-18" width="128" height="105"/>
+    </elements>
+</model>

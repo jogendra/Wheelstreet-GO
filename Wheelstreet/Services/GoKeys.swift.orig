@@ -1,0 +1,39 @@
+//
+//  GoKeys.swift
+//  Wheelstreet
+//
+//  Created by JOGENDRA on 06/12/17.
+//  Copyright © 2017 Kush Taneja. All rights reserved.
+//
+
+import Foundation
+
+struct GoKeys {
+    static let accessToken: String = "accessToken"
+    static let username: String = "username"
+    static let email: String = "email"
+    static let mobileNumber: String = "mobileNumber"
+    static let userOTP: String = "userotp"
+    static let isUserLoggedIn: String = "isUserLoggedIn"
+    static let alertTitleKey: String = "titleTextColor"
+    static let latitudeKey: String = "latitude"
+    static let longitudeKey: String = "longitude"
+    static let paramLatitudeKey: String = "lat"
+    static let paramLongitudeKey: String = "lng"
+    static let distanceKey: String = "distance"
+    static let kmRateKey: String = "kmRate"
+    static let baseRateKey: String = "baseRate"
+    static let minRateKey: String = "minRate"
+<<<<<<< HEAD
+    static let goBikeIdKey: String = "goBikeId"
+    static let bikeModelNameKey: String = "bikeModelName"
+    static let bikeMakeNameKey: String = "bikeMakeName"
+    static let bikeImageURLKey: String = "bikeImageUrl"
+    static let bikeRegNoKey: String = "regNo"
+=======
+    static let bikeId: String = "bikeId"
+    static let data: String = "data"
+    static let minuteOffer: String = "minuteOffer"
+    static let extraCharges: String = "extraCharges"
+>>>>>>> 73ab31d97b196911ec086d90f0e9be10b3cc2ab9
+}

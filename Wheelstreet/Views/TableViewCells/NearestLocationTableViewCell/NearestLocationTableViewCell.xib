@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NearestLocationTableViewCell" rowHeight="80" id="KGk-i7-Jjw" customClass="NearestLocationTableViewCell" customModule="Wheelstreet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="66.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A4f-LR-AJH">
+                        <rect key="frame" x="15" y="5" width="290" height="56.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Koramangala, 5th block" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ptz-bJ-oV4">
+                        <rect key="frame" x="40" y="15" width="180.5" height="11.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_gps" translatesAutoresizingMaskIntoConstraints="NO" id="6mY-tI-OhL">
+                        <rect key="frame" x="40" y="33.5" width="18" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="18" id="ICA-7g-A1J"/>
+                            <constraint firstAttribute="width" constant="18" id="oN2-Ig-Bjd"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wgS-G6-tAm">
+                        <rect key="frame" x="261" y="24" width="19" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="19" id="KsD-Cc-Yv4"/>
+                            <constraint firstAttribute="width" constant="19" id="lsm-ha-j4c"/>
+                        </constraints>
+                        <state key="normal" backgroundImage="Direction icon"/>
+                        <connections>
+                            <action selector="didTapDirectionsButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Mao-rc-xOh"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3.5 km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Iu-Gu-70O">
+                        <rect key="frame" x="66" y="33.5" width="49" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="wgS-G6-tAm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ptz-bJ-oV4" secondAttribute="trailing" constant="4" id="1ME-at-x6w"/>
+                    <constraint firstItem="6mY-tI-OhL" firstAttribute="top" secondItem="ptz-bJ-oV4" secondAttribute="bottom" constant="7" id="8dL-HL-4in"/>
+                    <constraint firstItem="ptz-bJ-oV4" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="Azc-pU-ztd"/>
+                    <constraint firstItem="6mY-tI-OhL" firstAttribute="leading" secondItem="ptz-bJ-oV4" secondAttribute="leading" id="Jpf-fb-8LA"/>
+                    <constraint firstItem="7Iu-Gu-70O" firstAttribute="top" secondItem="6mY-tI-OhL" secondAttribute="top" id="RkH-Lw-edL"/>
+                    <constraint firstItem="7Iu-Gu-70O" firstAttribute="bottom" secondItem="6mY-tI-OhL" secondAttribute="bottom" id="ZvI-oo-4dz"/>
+                    <constraint firstItem="7Iu-Gu-70O" firstAttribute="leading" secondItem="6mY-tI-OhL" secondAttribute="trailing" constant="8" id="Zvq-Sz-jgF"/>
+                    <constraint firstAttribute="trailing" secondItem="wgS-G6-tAm" secondAttribute="trailing" constant="40" id="cTQ-Af-tP6"/>
+                    <constraint firstItem="ptz-bJ-oV4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="kYE-nX-d0D"/>
+                    <constraint firstAttribute="trailing" secondItem="A4f-LR-AJH" secondAttribute="trailing" constant="15" id="r4A-Fg-vvu"/>
+                    <constraint firstItem="A4f-LR-AJH" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="uh2-bq-yZe"/>
+                    <constraint firstItem="A4f-LR-AJH" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="uw9-96-eyf"/>
+                    <constraint firstItem="wgS-G6-tAm" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="vAi-Ev-zsY"/>
+                    <constraint firstAttribute="bottom" secondItem="A4f-LR-AJH" secondAttribute="bottom" constant="5" id="vfx-8I-Psn"/>
+                    <constraint firstItem="7Iu-Gu-70O" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ptz-bJ-oV4" secondAttribute="trailing" id="vvA-Sx-oL8"/>
+                    <constraint firstAttribute="bottom" secondItem="6mY-tI-OhL" secondAttribute="bottom" constant="15" id="yMe-ZT-ahb"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="borderView" destination="A4f-LR-AJH" id="MWE-9g-wwo"/>
+                <outlet property="directionsButton" destination="wgS-G6-tAm" id="roh-zy-sDz"/>
+                <outlet property="distanceLabel" destination="7Iu-Gu-70O" id="Mch-SB-aLq"/>
+                <outlet property="locationIcon" destination="6mY-tI-OhL" id="agP-1a-Y9q"/>
+                <outlet property="titleLabel" destination="ptz-bJ-oV4" id="hO0-gQ-WB3"/>
+            </connections>
+            <point key="canvasLocation" x="71" y="58.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Direction icon" width="60" height="57"/>
+        <image name="location_gps" width="16" height="16"/>
+    </resources>
+</document>

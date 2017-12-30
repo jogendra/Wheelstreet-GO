@@ -1,0 +1,103 @@
+//
+//  AppetizerCommon.swift
+//  Appetizer
+//
+//  Created by Kush Taneja on 03/08/17.
+//  Copyright © 2017 Kush Taneja. All rights reserved.
+//
+
+import UIKit
+import SafariServices
+<<<<<<< HEAD
+=======
+
+>>>>>>> c23dea6a61f2fe1a6c5e7e4309a7decdc72dabc4
+
+class AppetizerCommon {
+
+  static public var dateFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd-MM-yyyy"
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+    return dateFormatter
+  }()
+
+  static public var yyyyMMdddateFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dddd"
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+    return dateFormatter
+  }()
+
+  static public var yyyyMMddDateTimeFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dddd HH:mm:ss"
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+    return dateFormatter
+  }()
+
+  static public var dayTimedateFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "HH:mm:ss"
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+    return dateFormatter
+  }()
+
+  static public func dateFormatterWithFormat(_ format: String) -> DateFormatter {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = format
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+    return dateFormatter
+  }
+
+<<<<<<< HEAD
+  static func convertToTimeStamp(_ time: String, date: Date) -> Int? {
+    if let timeStamp = AppetizerCommon.yyyyMMddDateTimeFormatter.date(from: ("\(date.year)-\(date.month)-\(date.day)" + " " + time))?.timeIntervalSince1970 {
+      return Int(timeStamp)
+    }
+    return nil
+  }
+  
+=======
+  static func somethingWentWrong() -> Error {
+    return NSError(domain: "com.sdsmdg.error",
+                   code: -901,
+                   userInfo: [NSLocalizedDescriptionKey : "Something Went Wrong"]) as Error
+
+  }
+
+  static func noResultsFound() -> Error {
+    return NSError(domain: "com.sdsmdg.error",
+                   code: -900,
+                   userInfo: [NSLocalizedDescriptionKey : "No Results Found"]) as Error
+
+  }
+
+  static func noInternetConnection() -> Error {
+    return NSError(domain: "com.sdsmdg.error",
+                   code: -1001,
+                   userInfo: [NSLocalizedDescriptionKey : "No Internet Connection"]) as Error
+
+  }
+>>>>>>> c23dea6a61f2fe1a6c5e7e4309a7decdc72dabc4
+  static func shareViaActivity() {
+    let activityVC = UIActivityViewController(activityItems: [(URL(string: "https://mdg.sdslabs.co/appetizer") ?? "https://mdg.sdslabs.co/appetizer"), "Click the url to skip unwanted meals in the mess"], applicationActivities: nil)
+      activityVC.completionWithItemsHandler = { (activity, success, items, error) in
+      }
+
+      UIApplication.topViewController()?.present(activityVC, animated: true, completion: nil)
+  }
+<<<<<<< HEAD
+=======
+
+  static func openURL(url: URL) {
+    UIApplication.topViewController()?.present(SFSafariViewController(url: url), animated: true) {
+    }
+  }
+>>>>>>> c23dea6a61f2fe1a6c5e7e4309a7decdc72dabc4
+}

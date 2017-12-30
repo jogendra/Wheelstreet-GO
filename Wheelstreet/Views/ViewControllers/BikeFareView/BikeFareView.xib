@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT" customClass="BikeFareView" customModule="Wheelstreet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bike_scanqr" translatesAutoresizingMaskIntoConstraints="NO" id="19F-qE-LFj">
+                    <rect key="frame" x="102" y="82" width="171" height="95"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="19F-qE-LFj" secondAttribute="height" multiplier="9:5" id="wom-zq-d5l"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BIKE FARE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhU-Ta-dFn">
+                    <rect key="frame" x="147" y="211" width="80" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Honda Activa" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jfn-5R-fVf">
+                    <rect key="frame" x="91" y="253" width="193" height="27"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KA 12C 89123" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6QW-rO-Tmo">
+                    <rect key="frame" x="134" y="285" width="108.5" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="₹ 3/km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Pv6-WG-yPn">
+                    <rect key="frame" x="160.5" y="350" width="54" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="22" id="Ami-aF-yH6"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fare" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Iz-rv-0SL">
+                    <rect key="frame" x="102" y="378" width="171" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="jeL-xj-31D"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tyf-fa-9Y7">
+                    <rect key="frame" x="114" y="430" width="148" height="44"/>
+                    <color key="backgroundColor" red="0.098039215690000001" green="0.80784313730000001" blue="0.56862745100000001" alpha="0.97394049660000004" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="CMI-fA-WWJ"/>
+                        <constraint firstAttribute="width" secondItem="tyf-fa-9Y7" secondAttribute="height" multiplier="37:11" id="qLr-R2-Utd"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                    <state key="normal" title="Proceed">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="didTapProceed:" destination="i5M-Pr-FkT" eventType="touchUpInside" id="cxu-Dv-L4c"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xh4-5A-FOI">
+                    <rect key="frame" x="220.5" y="342" width="22" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="22" id="XRp-ph-yHK"/>
+                        <constraint firstAttribute="height" constant="22" id="jM7-c4-1Tb"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" image="Info_icon_white">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="didTapFareDetail:" destination="i5M-Pr-FkT" eventType="touchUpInside" id="S9K-mq-64e"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="20R-FL-fTk">
+                    <rect key="frame" x="138" y="566" width="99" height="74"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="20R-FL-fTk" secondAttribute="height" multiplier="4:3" id="EaO-9P-50Z"/>
+                    </constraints>
+                    <inset key="titleEdgeInsets" minX="-32" minY="0.0" maxX="0.0" maxY="-30"/>
+                    <inset key="imageEdgeInsets" minX="23" minY="0.0" maxX="0.0" maxY="22"/>
+                    <state key="normal" title="Scan QR" image="qr_code_scan">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="didTapScanQR:" destination="i5M-Pr-FkT" eventType="touchUpInside" id="5Py-ZH-zJa"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="7Iz-rv-0SL" firstAttribute="top" secondItem="Pv6-WG-yPn" secondAttribute="bottom" constant="6" id="29x-H1-sI9"/>
+                <constraint firstItem="xhU-Ta-dFn" firstAttribute="centerX" secondItem="19F-qE-LFj" secondAttribute="centerX" id="680-oy-l2R"/>
+                <constraint firstItem="6QW-rO-Tmo" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="A1K-Lf-IJe"/>
+                <constraint firstItem="6QW-rO-Tmo" firstAttribute="top" secondItem="jfn-5R-fVf" secondAttribute="bottom" constant="5.5" id="Aix-qA-VQd"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6QW-rO-Tmo" secondAttribute="trailing" constant="4" id="CeA-4X-9z2"/>
+                <constraint firstItem="7Iz-rv-0SL" firstAttribute="top" secondItem="Xh4-5A-FOI" secondAttribute="bottom" constant="14" id="Jdd-k8-sLy"/>
+                <constraint firstItem="6QW-rO-Tmo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="4" id="JfK-MM-1MG"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7Iz-rv-0SL" secondAttribute="trailing" constant="102" id="LfU-3V-GIm"/>
+                <constraint firstItem="19F-qE-LFj" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="62" id="Nf6-L4-jGp"/>
+                <constraint firstItem="Xh4-5A-FOI" firstAttribute="leading" secondItem="Pv6-WG-yPn" secondAttribute="trailing" constant="6" id="OH2-oO-vda"/>
+                <constraint firstItem="19F-qE-LFj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="102" id="Qcw-nI-gSR"/>
+                <constraint firstItem="xhU-Ta-dFn" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="R0c-Hs-yZu"/>
+                <constraint firstItem="tyf-fa-9Y7" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="R3C-Vu-aej"/>
+                <constraint firstItem="jfn-5R-fVf" firstAttribute="top" secondItem="xhU-Ta-dFn" secondAttribute="bottom" constant="22" id="RMf-EK-ldH"/>
+                <constraint firstItem="tyf-fa-9Y7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="114" id="RaF-mb-IOZ"/>
+                <constraint firstItem="jfn-5R-fVf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="91" id="SIh-tY-QTt"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jfn-5R-fVf" secondAttribute="trailing" constant="91" id="VC2-aM-bZA"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="tyf-fa-9Y7" secondAttribute="trailing" constant="113" id="VH2-Rb-bWb"/>
+                <constraint firstItem="Pv6-WG-yPn" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="aJY-es-0Ku"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Xh4-5A-FOI" secondAttribute="trailing" constant="8" id="aLb-W1-GVP"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="20R-FL-fTk" secondAttribute="bottom" constant="27" id="bF2-Nc-rry"/>
+                <constraint firstItem="jfn-5R-fVf" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="cJI-Ox-9pp"/>
+                <constraint firstItem="xhU-Ta-dFn" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="147" id="dpP-M2-cHf"/>
+                <constraint firstItem="20R-FL-fTk" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="eSs-K2-8jj"/>
+                <constraint firstItem="19F-qE-LFj" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="eV1-Pw-IJu"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="19F-qE-LFj" secondAttribute="trailing" constant="102" id="fiN-Oc-Kcf"/>
+                <constraint firstItem="20R-FL-fTk" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="138" id="fpY-Rw-3cC"/>
+                <constraint firstItem="Pv6-WG-yPn" firstAttribute="top" secondItem="6QW-rO-Tmo" secondAttribute="bottom" constant="45" id="heX-GF-FsN"/>
+                <constraint firstItem="xhU-Ta-dFn" firstAttribute="top" secondItem="19F-qE-LFj" secondAttribute="bottom" constant="34" id="ho8-Qs-bNj"/>
+                <constraint firstItem="tyf-fa-9Y7" firstAttribute="top" secondItem="7Iz-rv-0SL" secondAttribute="bottom" constant="32" id="jmZ-GW-DFu"/>
+                <constraint firstItem="7Iz-rv-0SL" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="102" id="kUZ-jy-NIr"/>
+                <constraint firstItem="Pv6-WG-yPn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="m1i-LR-yUQ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="xhU-Ta-dFn" secondAttribute="trailing" constant="148" id="p52-gj-dBn"/>
+                <constraint firstItem="6QW-rO-Tmo" firstAttribute="centerX" secondItem="jfn-5R-fVf" secondAttribute="centerX" id="zOU-yU-T0x"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <connections>
+                <outlet property="bikeNameLabel" destination="jfn-5R-fVf" id="did-AH-GBQ"/>
+                <outlet property="bikeNumberLabel" destination="6QW-rO-Tmo" id="iw2-Yo-7Hg"/>
+                <outlet property="fareDetailButton" destination="Xh4-5A-FOI" id="5k7-TN-fbb"/>
+                <outlet property="farePerKMLabel" destination="Pv6-WG-yPn" id="Nhp-eg-B8c"/>
+                <outlet property="proceedButton" destination="tyf-fa-9Y7" id="XGM-3i-mx6"/>
+                <outlet property="scanQRButton" destination="20R-FL-fTk" id="eKI-Sf-vLJ"/>
+            </connections>
+            <point key="canvasLocation" x="33.5" y="54.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Info_icon_white" width="33" height="33"/>
+        <image name="bike_scanqr" width="173" height="95"/>
+        <image name="qr_code_scan" width="31" height="31"/>
+    </resources>
+</document>
