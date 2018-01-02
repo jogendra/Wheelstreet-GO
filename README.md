@@ -15,4 +15,4 @@ Followed the following guides and code standards:
 
 ### Contact
 
-For any further details contact [jd@wheelstreet.in](mailto:jd@wheelstreet.in)
+For any further details contact [jogendra.singh.jog@gmail.com](mailto:jogendra.singh.jog@gmail.com)
