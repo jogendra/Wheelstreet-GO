@@ -4,7 +4,7 @@ Wheelstreet Vega
 ### Installation
 
 1. Clone the repo via git clone command.
-```git clone https://bitbucket.org/wheelstreet/vega.git```
+```https://github.com/imjog/Wheelstreet-GO.git```
 2. Run the following command to install all the third-party libraries.
 ```pod install```
 
