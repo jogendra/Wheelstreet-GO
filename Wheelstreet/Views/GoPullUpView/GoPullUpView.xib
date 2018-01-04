@@ -98,24 +98,29 @@
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tPy-2c-loJ">
-                            <rect key="frame" x="322" y="31" width="11" height="11"/>
+                            <rect key="frame" x="322" y="19" width="14" height="14"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="11" id="NWg-xY-uDR"/>
-                                <constraint firstAttribute="height" constant="11" id="R1y-oy-RIH"/>
+                                <constraint firstAttribute="width" constant="14" id="NWg-xY-uDR"/>
+                                <constraint firstAttribute="height" constant="14" id="R1y-oy-RIH"/>
                             </constraints>
+                            <inset key="imageEdgeInsets" minX="16" minY="16" maxX="16" maxY="16"/>
                             <state key="normal" backgroundImage="icon-info"/>
                             <connections>
-                                <action selector="didTapInfoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="EbB-t2-EE9"/>
+                                <action selector="didTapInfoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="mAq-Wa-OvC"/>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="₹3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="BDt-Hg-Btw" userLabel="fare">
-                            <rect key="frame" x="278.5" y="42" width="39.5" height="27"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                            <rect key="frame" x="278.5" y="33" width="39.5" height="45"/>
+                            <gestureRecognizers/>
+                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="lu5-eI-s3F" appends="YES" id="irC-52-s32"/>
+                            </connections>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Per Km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="yrp-NI-tWu" userLabel="Label Per Km">
-                            <rect key="frame" x="275" y="76" width="46.5" height="17"/>
+                            <rect key="frame" x="275" y="80" width="46.5" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46.5" id="bAS-uw-Xcu"/>
                                 <constraint firstAttribute="height" constant="17" id="uKb-XM-iTA"/>
@@ -127,6 +132,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="tPy-2c-loJ" firstAttribute="top" secondItem="S7a-Gw-44Q" secondAttribute="top" constant="4" id="0fw-B2-Rrq"/>
                         <constraint firstItem="L8g-Oa-hTY" firstAttribute="leading" secondItem="QU5-Db-fcC" secondAttribute="trailing" constant="16.5" id="4vf-kg-0gM"/>
                         <constraint firstItem="9bO-bd-039" firstAttribute="trailing" secondItem="WC4-fh-DcW" secondAttribute="trailing" id="5fl-wq-Esf"/>
                         <constraint firstItem="BDt-Hg-Btw" firstAttribute="centerY" secondItem="S7a-Gw-44Q" secondAttribute="centerY" id="7XX-TF-rDr"/>
@@ -137,6 +143,7 @@
                         <constraint firstItem="1hg-wy-UYd" firstAttribute="leading" secondItem="L8g-Oa-hTY" secondAttribute="leading" id="IrV-ZF-ggw"/>
                         <constraint firstItem="1hg-wy-UYd" firstAttribute="top" secondItem="WC4-fh-DcW" secondAttribute="bottom" constant="11" id="Mfu-fF-pi7"/>
                         <constraint firstAttribute="trailing" secondItem="BDt-Hg-Btw" secondAttribute="trailing" constant="27" id="NNO-Y7-Gd7"/>
+                        <constraint firstItem="yrp-NI-tWu" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="S7a-Gw-44Q" secondAttribute="bottom" constant="-4" id="Of9-Gy-2VL"/>
                         <constraint firstAttribute="bottom" secondItem="QU5-Db-fcC" secondAttribute="bottom" constant="22.5" id="U22-3z-7TB"/>
                         <constraint firstItem="9bO-bd-039" firstAttribute="height" secondItem="1hg-wy-UYd" secondAttribute="height" id="UoX-lg-BHz"/>
                         <constraint firstItem="yrp-NI-tWu" firstAttribute="centerX" secondItem="BDt-Hg-Btw" secondAttribute="centerX" id="Uvi-4W-sdg"/>
@@ -148,12 +155,12 @@
                         <constraint firstItem="QU5-Db-fcC" firstAttribute="top" secondItem="382-nT-a3z" secondAttribute="top" constant="23" id="eSS-cK-phN"/>
                         <constraint firstItem="9bO-bd-039" firstAttribute="centerY" secondItem="1hg-wy-UYd" secondAttribute="centerY" id="k3R-Mv-AB6"/>
                         <constraint firstItem="WC4-fh-DcW" firstAttribute="leading" secondItem="L8g-Oa-hTY" secondAttribute="leading" id="n1h-N6-agP"/>
-                        <constraint firstItem="tPy-2c-loJ" firstAttribute="leading" secondItem="yrp-NI-tWu" secondAttribute="trailing" constant="0.5" id="q0M-WG-nga"/>
+                        <constraint firstItem="tPy-2c-loJ" firstAttribute="leading" secondItem="yrp-NI-tWu" secondAttribute="trailing" id="q0M-WG-nga"/>
                         <constraint firstItem="1hg-wy-UYd" firstAttribute="bottom" secondItem="S7a-Gw-44Q" secondAttribute="bottom" id="rd8-PL-e5z"/>
                         <constraint firstItem="WC4-fh-DcW" firstAttribute="trailing" secondItem="L8g-Oa-hTY" secondAttribute="trailing" id="sfN-FD-bPE"/>
                         <constraint firstItem="S7a-Gw-44Q" firstAttribute="leading" secondItem="L8g-Oa-hTY" secondAttribute="trailing" constant="24" id="w3M-96-7yv"/>
                         <constraint firstItem="tPy-2c-loJ" firstAttribute="bottom" secondItem="BDt-Hg-Btw" secondAttribute="top" id="xXj-NZ-jJG"/>
-                        <constraint firstItem="yrp-NI-tWu" firstAttribute="top" secondItem="BDt-Hg-Btw" secondAttribute="bottom" constant="7" id="zVK-Se-rdg"/>
+                        <constraint firstItem="yrp-NI-tWu" firstAttribute="top" secondItem="BDt-Hg-Btw" secondAttribute="bottom" constant="2" id="zVK-Se-rdg"/>
                     </constraints>
                 </view>
             </subviews>
@@ -175,10 +182,12 @@
                 <outlet property="bikeModelLabel" destination="L8g-Oa-hTY" id="4X4-ar-9dP"/>
                 <outlet property="bikeNumberLabel" destination="WC4-fh-DcW" id="mdY-T6-n1Y"/>
                 <outlet property="directionButton" destination="aa4-Qc-NE7" id="h0h-Bk-Wxe"/>
+                <outlet property="fareTapGesture" destination="lu5-eI-s3F" id="eGc-vL-Smy"/>
                 <outlet property="unlockButton" destination="Obq-gN-CtF" id="yTw-0g-mt5"/>
             </connections>
             <point key="canvasLocation" x="10.5" y="-178.5"/>
         </view>
+        <tapGestureRecognizer id="lu5-eI-s3F"/>
     </objects>
     <resources>
         <image name="icon-gps" width="16" height="16"/>

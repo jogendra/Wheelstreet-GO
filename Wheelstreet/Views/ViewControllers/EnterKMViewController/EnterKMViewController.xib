@@ -26,7 +26,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nf9-v4-PqC">
-                    <rect key="frame" x="329" y="98" width="27" height="29"/>
+                    <rect key="frame" x="329" y="50" width="27" height="29"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="nf9-v4-PqC" secondAttribute="height" multiplier="27:29" id="eeQ-Ss-gCq"/>
                     </constraints>
@@ -35,26 +35,20 @@
                         <action selector="didTapUseFlash:" destination="-1" eventType="touchUpInside" id="UoK-hb-Ste"/>
                     </connections>
                 </button>
-                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Only First Five Digits" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Ba-oT-s7H">
-                    <rect key="frame" x="110" y="98" width="156.5" height="20"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="odometer_start_km_scan" translatesAutoresizingMaskIntoConstraints="NO" id="xPB-is-jsa">
-                    <rect key="frame" x="113" y="133" width="150" height="35"/>
+                    <rect key="frame" x="113" y="50" width="150" height="35"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="xPB-is-jsa" secondAttribute="height" multiplier="30:7" id="0Pw-zg-aCJ"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Start KM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8yE-RV-eTF">
-                    <rect key="frame" x="91" y="187" width="193" height="20.5"/>
+                    <rect key="frame" x="91" y="104" width="193" height="20.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OQt-j5-xgl" customClass="PinCodeTextField" customModule="PinCodeTextField">
-                    <rect key="frame" x="107" y="232" width="161" height="41"/>
+                    <rect key="frame" x="107" y="149" width="161" height="41"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="OQt-j5-xgl" secondAttribute="height" multiplier="161:41" id="MtX-W8-ojR"/>
                     </constraints>
@@ -93,7 +87,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0O-pQ-SKm">
-                    <rect key="frame" x="114" y="334" width="148" height="44"/>
+                    <rect key="frame" x="114" y="251" width="148" height="44"/>
                     <color key="backgroundColor" red="0.098039215690000001" green="0.80784313730000001" blue="0.56862745100000001" alpha="0.97394049660000004" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="P07-z9-GQO"/>
@@ -113,22 +107,19 @@
                 <constraint firstItem="8yE-RV-eTF" firstAttribute="leading" secondItem="2Cj-4g-BY2" secondAttribute="leading" constant="91" id="3cX-pi-8DO"/>
                 <constraint firstItem="OQt-j5-xgl" firstAttribute="centerX" secondItem="2Cj-4g-BY2" secondAttribute="centerX" id="5bg-Ui-wad"/>
                 <constraint firstItem="2Cj-4g-BY2" firstAttribute="trailing" secondItem="OQt-j5-xgl" secondAttribute="trailing" constant="107" id="6ID-p9-TcV"/>
-                <constraint firstItem="1Ba-oT-s7H" firstAttribute="top" secondItem="2Cj-4g-BY2" secondAttribute="top" constant="78" id="85x-d9-MLa"/>
+                <constraint firstItem="nf9-v4-PqC" firstAttribute="top" secondItem="xPB-is-jsa" secondAttribute="top" id="72B-ee-ov8"/>
+                <constraint firstItem="xPB-is-jsa" firstAttribute="top" secondItem="2Cj-4g-BY2" secondAttribute="top" constant="30" id="9L8-Md-Imo"/>
                 <constraint firstItem="xPB-is-jsa" firstAttribute="centerX" secondItem="2Cj-4g-BY2" secondAttribute="centerX" id="CsI-MJ-g2l"/>
-                <constraint firstItem="1Ba-oT-s7H" firstAttribute="centerX" secondItem="2Cj-4g-BY2" secondAttribute="centerX" id="JzL-ju-UNc"/>
                 <constraint firstItem="f0O-pQ-SKm" firstAttribute="top" secondItem="OQt-j5-xgl" secondAttribute="bottom" constant="61" id="M6j-oI-14z"/>
                 <constraint firstItem="OQt-j5-xgl" firstAttribute="top" secondItem="8yE-RV-eTF" secondAttribute="bottom" constant="24.5" id="M9v-6O-XIU"/>
                 <constraint firstItem="8yE-RV-eTF" firstAttribute="centerX" secondItem="2Cj-4g-BY2" secondAttribute="centerX" id="Tju-8W-av8"/>
-                <constraint firstItem="xPB-is-jsa" firstAttribute="top" secondItem="1Ba-oT-s7H" secondAttribute="bottom" constant="15" id="TrQ-xT-P8l"/>
                 <constraint firstItem="OQt-j5-xgl" firstAttribute="leading" secondItem="2Cj-4g-BY2" secondAttribute="leading" constant="107" id="ViF-dx-2QK"/>
                 <constraint firstItem="8yE-RV-eTF" firstAttribute="top" secondItem="xPB-is-jsa" secondAttribute="bottom" constant="19" id="WcL-X9-DeB"/>
-                <constraint firstItem="2Cj-4g-BY2" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1Ba-oT-s7H" secondAttribute="trailing" constant="8" id="ZrP-Ok-PtV"/>
                 <constraint firstItem="xPB-is-jsa" firstAttribute="leading" secondItem="2Cj-4g-BY2" secondAttribute="leading" constant="113" id="iEr-S6-G4z"/>
                 <constraint firstItem="2Cj-4g-BY2" firstAttribute="trailing" secondItem="nf9-v4-PqC" secondAttribute="trailing" constant="19" id="ibr-8R-GdC"/>
                 <constraint firstItem="f0O-pQ-SKm" firstAttribute="leading" secondItem="2Cj-4g-BY2" secondAttribute="leading" constant="114" id="lQF-ge-YmW"/>
                 <constraint firstItem="f0O-pQ-SKm" firstAttribute="centerX" secondItem="2Cj-4g-BY2" secondAttribute="centerX" id="lXs-cK-Drt"/>
                 <constraint firstItem="2Cj-4g-BY2" firstAttribute="trailing" secondItem="xPB-is-jsa" secondAttribute="trailing" constant="112" id="ose-9c-slA"/>
-                <constraint firstItem="nf9-v4-PqC" firstAttribute="top" secondItem="2Cj-4g-BY2" secondAttribute="top" constant="78" id="yuO-fC-sWS"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="2Cj-4g-BY2"/>
         </view>

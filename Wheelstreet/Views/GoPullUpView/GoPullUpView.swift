@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Mixpanel
 
 protocol GoPullUpViewDelegate: class {
   func presentFareDetailsFor(bike: GoBike)
@@ -27,6 +28,7 @@ class GoPullUpView: UIView {
 
   @IBOutlet weak var directionButton: UIButton!
 
+  @IBOutlet weak var fareTapGesture: UITapGestureRecognizer!
   @IBOutlet weak var unlockButton: UIButton!
 
   var bike: GoBike? {
@@ -43,6 +45,7 @@ class GoPullUpView: UIView {
     ViewsUISetup()
     ImageViewsSetup()
     ButtonsSetup()
+    fareTapGesture.addTarget(self, action: #selector(didTapFare(_:)))
 
   }
 
@@ -89,13 +92,11 @@ class GoPullUpView: UIView {
     unlockButton.centerTextAndImage(spacing: 10.0)
   }
 
-  func ImageViewsSetup() {
-    //Bike Image View Setup
-    let bikeImage = UIImage(named: GoImages.activaPlaceholderImage)
-    bikeImageView.image = bikeImage
+  @objc func didTapFare(_ sender: Any) {
+    self.presentFareDetails()
   }
 
-  @IBAction func didTapInfoButton(_ sender: Any) {
+  func presentFareDetails() {
     guard let bike = self.bike else {
       fatalError("Bike for PullUpVIew not found")
     }
@@ -103,10 +104,29 @@ class GoPullUpView: UIView {
     pullViewDelegate?.presentFareDetailsFor(bike: bike)
   }
 
+  func ImageViewsSetup() {
+    //Bike Image View Setup
+    let bikeImage = UIImage(named: GoImages.activaPlaceholderImage)
+    bikeImageView.image = bikeImage
+  }
+
+  @IBAction func didTapInfoButton(_ sender: Any) {
+    if let bike = bike {
+      Mixpanel.mainInstance().track(event: GoMixPanelEvents.goFareDetailsInfo, properties: ["Bike Reg No": bike.regNo])
+    }
+    else {
+      Mixpanel.mainInstance().track(event: GoMixPanelEvents.goFareDetailsInfo)
+    }
+    
+    presentFareDetails()
+  }
+
   @IBAction func didTapUnlockButton(_ sender: UIButton) {
     guard let bike = self.bike else {
       fatalError("Bike for PullUpVIew not found")
     }
+
+    Mixpanel.mainInstance().track(event: GoMixPanelEvents.goUnlockBike, properties: ["Bike ID": bike.goBikeId, "Bike Reg No": bike.regNo])
 
     pullViewDelegate?.didTapUnlockButtonFor(bike: bike)
   }
@@ -115,8 +135,10 @@ class GoPullUpView: UIView {
     guard let bike = self.bike else {
       fatalError("Bike for PullUpVIew not found")
     }
+     Mixpanel.mainInstance().track(event: GoMixPanelEvents.goDirections, properties: ["Bike ID": bike.goBikeId, "Bike Reg No": bike.regNo])
 
     if let bikeLocation = bike.location {
+      Mixpanel.mainInstance().track(event: GoMixPanelEvents.goUnlockBike, properties: ["Bike ID": bike.goBikeId])
       WheelstreetCommon.googleMapsDirections(toLocation: bikeLocation) { WheelstreetViews.somethingWentWrongAlertView() }
     }
     else {

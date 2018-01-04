@@ -71,6 +71,10 @@ extension UIView {
    *  public methods
    */
   func makeToast(message msg: String) {
+//    self.makeToast(message: msg, duration: HRToastDefaultDuration, position: HRToastPositionDefault as AnyObject)
+  }
+
+  func showToast(message msg: String) {
     self.makeToast(message: msg, duration: HRToastDefaultDuration, position: HRToastPositionDefault as AnyObject)
   }
 

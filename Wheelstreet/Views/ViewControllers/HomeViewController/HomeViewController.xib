@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -12,16 +12,296 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="Wheelstreet" customModuleProvider="target">
             <connections>
+                <outlet property="customMyLocationButton" destination="oPG-Uc-Zes" id="717-b0-Qxo"/>
+                <outlet property="customerButtonshadowView" destination="zYN-4y-ksi" id="wd2-ub-0vD"/>
+                <outlet property="customerCareButton" destination="efG-pt-GRu" id="j5O-BY-TRu"/>
+                <outlet property="helpButton" destination="1D4-ge-Nq9" id="lo9-Ta-JA8"/>
+                <outlet property="myLocationButtonshadowView" destination="s9k-VN-VSf" id="AR7-LV-y1M"/>
+                <outlet property="refreshButton" destination="Z5u-bX-gGL" id="37J-Rx-Qtf"/>
+                <outlet property="refreshButtonshadowView" destination="UQF-P4-ebX" id="glw-aX-O9y"/>
+                <outlet property="unlockButton" destination="mMt-XU-wlY" id="5vs-b3-88o"/>
+                <outlet property="unlockButtonConstraint" destination="DqC-pg-KIT" id="vtd-Ap-kaq"/>
+                <outlet property="userButton" destination="Rgl-Tb-yrO" id="tap-4x-Hye"/>
+                <outlet property="userButtonTopConstraint" destination="MUZ-Ka-i4i" id="ow8-BS-P2A"/>
+                <outlet property="userButtonshadowView" destination="A14-Kc-UCs" id="Yk2-23-w23"/>
                 <outlet property="view" destination="iN0-l3-epB" id="aTj-G0-hgc"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A14-Kc-UCs">
+                    <rect key="frame" x="16" y="92" width="48" height="48"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rgl-Tb-yrO">
+                            <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="LdJ-5m-pmv"/>
+                                <constraint firstAttribute="height" constant="48" id="R4z-t5-Fbt"/>
+                            </constraints>
+                            <state key="normal" image="Profile"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="24"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="didTapUserButton:" destination="-1" eventType="touchUpInside" id="12j-N8-LML"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="48" id="F7N-QC-t2k"/>
+                        <constraint firstAttribute="bottom" secondItem="Rgl-Tb-yrO" secondAttribute="bottom" id="Fvw-v7-kas"/>
+                        <constraint firstItem="Rgl-Tb-yrO" firstAttribute="top" secondItem="A14-Kc-UCs" secondAttribute="top" id="OgC-XR-MDa"/>
+                        <constraint firstItem="Rgl-Tb-yrO" firstAttribute="leading" secondItem="A14-Kc-UCs" secondAttribute="leading" id="YiZ-sP-Ryd"/>
+                        <constraint firstAttribute="trailing" secondItem="Rgl-Tb-yrO" secondAttribute="trailing" id="ajU-gd-rhc"/>
+                        <constraint firstAttribute="height" constant="48" id="c5H-ip-k69"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="NO"/>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
+                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                            <size key="value" width="0.0" height="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                            <integer key="value" value="24"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1D4-ge-Nq9">
+                    <rect key="frame" x="311" y="92" width="48" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="3Xw-EA-kt5"/>
+                        <constraint firstAttribute="width" constant="48" id="GvA-8d-WiY"/>
+                    </constraints>
+                    <state key="normal" image="Info"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
+                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                            <size key="value" width="0.0" height="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                            <real key="value" value="0.40000000000000002"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                            <integer key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="didTapHelpButton:" destination="-1" eventType="touchUpInside" id="bdP-t6-R0T"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zYN-4y-ksi">
+                    <rect key="frame" x="16" y="693" width="48" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="48" id="iVo-1k-vGt"/>
+                        <constraint firstAttribute="height" constant="48" id="mwP-AV-ODs"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="NO"/>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
+                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                            <size key="value" width="0.0" height="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                            <integer key="value" value="24"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="efG-pt-GRu">
+                    <rect key="frame" x="16" y="694" width="48" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="Sv1-oh-ap2"/>
+                        <constraint firstAttribute="width" constant="48" id="geL-Q9-21u"/>
+                    </constraints>
+                    <state key="normal" image="CustomerCare-icon"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
+                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                            <size key="value" width="0.0" height="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                            <real key="value" value="0.40000000000000002"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                            <integer key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="didTapCallCustomerCare:" destination="-1" eventType="touchUpInside" id="PZs-Oh-ulv"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s9k-VN-VSf">
+                    <rect key="frame" x="311" y="693" width="48" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="48" id="0i8-Pm-PJK"/>
+                        <constraint firstAttribute="height" constant="48" id="PIh-cb-9TB"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="NO"/>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
+                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                            <size key="value" width="0.0" height="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                            <integer key="value" value="24"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oPG-Uc-Zes">
+                    <rect key="frame" x="311" y="694" width="48" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="48" id="VdC-3K-RbH"/>
+                        <constraint firstAttribute="height" constant="48" id="ocO-d5-Geq"/>
+                    </constraints>
+                    <state key="normal" image="custom-my-location-icon"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
+                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                            <size key="value" width="0.0" height="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                            <real key="value" value="0.40000000000000002"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                            <integer key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="goToMyCurrentLocation:" destination="-1" eventType="touchUpInside" id="Faw-sY-chm"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UQF-P4-ebX">
+                    <rect key="frame" x="317" y="642" width="36" height="36"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="36" id="60H-ea-dFB"/>
+                        <constraint firstAttribute="width" constant="36" id="VNR-YK-B4y"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="NO"/>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
+                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                            <size key="value" width="0.0" height="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                            <integer key="value" value="24"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z5u-bX-gGL">
+                    <rect key="frame" x="317" y="642" width="36" height="36"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="36" id="15U-sd-4y5"/>
+                        <constraint firstAttribute="width" constant="36" id="mJ7-LY-YeC"/>
+                    </constraints>
+                    <state key="normal" image="Reload-icon"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
+                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                            <size key="value" width="0.0" height="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                            <real key="value" value="0.40000000000000002"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                            <integer key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="refreshButtonTapped:" destination="-1" eventType="touchUpInside" id="gSD-8P-CRo"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mMt-XU-wlY">
+                    <rect key="frame" x="106" y="692" width="162" height="50"/>
+                    <color key="backgroundColor" red="0.098039215686274508" green="0.80784313725490198" blue="0.56862745098039214" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="5Kc-Ll-xcI"/>
+                        <constraint firstAttribute="width" constant="162" id="eUV-As-3Ye"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
+                    <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="-5" maxY="0.0"/>
+                    <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="5" maxY="0.0"/>
+                    <state key="normal" title="Unlock" image="unlock-icon-white">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="25"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="NO"/>
+                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                            <color key="value" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="didTapDriectUnlock:" destination="-1" eventType="touchUpInside" id="Afm-tz-FvX"/>
+                    </connections>
+                </button>
+            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="efG-pt-GRu" firstAttribute="centerX" secondItem="A14-Kc-UCs" secondAttribute="centerX" id="46l-9A-z2U"/>
+                <constraint firstItem="A14-Kc-UCs" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="8JF-AL-Vji"/>
+                <constraint firstItem="zYN-4y-ksi" firstAttribute="centerY" secondItem="mMt-XU-wlY" secondAttribute="centerY" id="BJh-ia-EkK"/>
+                <constraint firstItem="Z5u-bX-gGL" firstAttribute="centerX" secondItem="oPG-Uc-Zes" secondAttribute="centerX" id="CIX-0n-fG5"/>
+                <constraint firstItem="mMt-XU-wlY" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" constant="-36" id="DqC-pg-KIT"/>
+                <constraint firstItem="oPG-Uc-Zes" firstAttribute="top" secondItem="Z5u-bX-gGL" secondAttribute="bottom" constant="16" id="EgD-EU-Ogl"/>
+                <constraint firstItem="s9k-VN-VSf" firstAttribute="centerY" secondItem="mMt-XU-wlY" secondAttribute="centerY" id="GIF-On-0Zh"/>
+                <constraint firstItem="zYN-4y-ksi" firstAttribute="centerX" secondItem="A14-Kc-UCs" secondAttribute="centerX" id="GSg-M4-T6M"/>
+                <constraint firstItem="s9k-VN-VSf" firstAttribute="centerX" secondItem="1D4-ge-Nq9" secondAttribute="centerX" id="Jhu-cd-CiZ"/>
+                <constraint firstItem="A14-Kc-UCs" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="48" id="MUZ-Ka-i4i"/>
+                <constraint firstItem="1D4-ge-Nq9" firstAttribute="centerY" secondItem="A14-Kc-UCs" secondAttribute="centerY" id="PhG-zx-lKe"/>
+                <constraint firstItem="UQF-P4-ebX" firstAttribute="centerX" secondItem="oPG-Uc-Zes" secondAttribute="centerX" id="Tr8-h0-uZd"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="1D4-ge-Nq9" secondAttribute="trailing" constant="16" id="XAa-Ec-U9z"/>
+                <constraint firstItem="oPG-Uc-Zes" firstAttribute="top" secondItem="UQF-P4-ebX" secondAttribute="bottom" constant="16" id="eYb-hg-HQj"/>
+                <constraint firstItem="oPG-Uc-Zes" firstAttribute="bottom" secondItem="mMt-XU-wlY" secondAttribute="bottom" id="gv5-7a-yC5"/>
+                <constraint firstItem="mMt-XU-wlY" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="hfW-Mg-VAe"/>
+                <constraint firstItem="oPG-Uc-Zes" firstAttribute="centerX" secondItem="1D4-ge-Nq9" secondAttribute="centerX" id="qKt-x9-28L"/>
+                <constraint firstItem="efG-pt-GRu" firstAttribute="bottom" secondItem="mMt-XU-wlY" secondAttribute="bottom" id="tgt-JV-pPr"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
         </view>
     </objects>
+    <resources>
+        <image name="CustomerCare-icon" width="48" height="48"/>
+        <image name="Info" width="48" height="48"/>
+        <image name="Profile" width="48" height="48"/>
+        <image name="Reload-icon" width="48" height="48"/>
+        <image name="custom-my-location-icon" width="48" height="48"/>
+        <image name="unlock-icon-white" width="19" height="19"/>
+    </resources>
 </document>

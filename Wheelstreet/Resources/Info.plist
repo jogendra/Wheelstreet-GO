@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>GO</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -20,9 +22,27 @@
 	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 		<string>googlechromes</string>
 		<string>comgooglemaps</string>
 	</array>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>7a0be3200fac9cf30452b20b593972d5d39c2b22</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -30,21 +50,20 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Allow us to use camera to capture the image</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Program requires GPS to track cars and job orders</string>
+	<string>GO needs location prermissions for a reliable bike ride and to improve pickups, navigation and support</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Program requires GPS to track cars and job orders</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Program requires GPS to track cars and job orders</string>
+	<string>GO needs location prermissions for a reliable bike ride and to improve pickups, navigation and support</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>GO needs location prermissions for a reliable bike ride and to improve pickups, navigation and support</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This app uses your Microphone to allow Voice over IP communication with the Program Admin system
-    </string>
+	<string>GO requires microphone permissions in order to record your voice</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Allow us</string>
+	<string>GO requires photo library permission for taking images to improve your biking experience</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow us to save photo</string>
+	<string>GO requires photo library permission for taking images to improve your biking experience</string>
+  <key>NSCameraUsageDescription</key>
+  <string>This allows you to scan QR code on the bike, take photos from within the app (example kyc document images)</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -66,5 +85,18 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1628198947422117</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>1628198947422117</string>
+	<key>FacebookDisplayName</key>
+	<string>Wheelstreet GO</string>
 </dict>
 </plist>

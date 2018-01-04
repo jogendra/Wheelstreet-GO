@@ -22,20 +22,26 @@ class FareDetailsTableViewCell: UITableViewCell, NibLoadableView, WheelstreetReu
   }
 
   func configure(rent: GORent) {
-    priceLabel.text = "₹ \(rent.rent)"
     infoButton(isHidden: true)
 
     switch rent.type {
     case .base:
       typeLabel.text = "Base Fare"
+      priceLabel.text = "₹ \(rent.rent)"
     case .km:
       typeLabel.text = "Distance Charges"
+      priceLabel.text = "₹ \(rent.rent)"
     case .time:
       typeLabel.text = "Time Charges"
+      priceLabel.text = "₹ \(rent.rent)"
     case .extraCharge:
       typeLabel.text = "Extra Charges"
-      
+      priceLabel.text = "₹ \(rent.rent)"
       infoButton(isHidden: false)
+    case .bookedOn:
+      typeLabel.text = "Booked On"
+      priceLabel.text = "\(rent.rent)"
+
     }
   }
 

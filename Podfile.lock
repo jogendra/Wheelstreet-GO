@@ -1,7 +1,28 @@
 PODS:
-  - Alamofire (4.5.0)
+  - Alamofire (4.6.0)
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.8.4)
+  - Crashlytics (3.9.3):
+    - Fabric (~> 1.7.2)
+  - Fabric (1.7.2)
+  - FacebookCore (0.3.0):
+    - Bolts (~> 1.8)
+    - FBSDKCoreKit (~> 4.27)
+  - FacebookShare (0.3.0):
+    - Bolts (~> 1.8)
+    - FacebookCore (~> 0.3)
+    - FBSDKCoreKit (~> 4.27)
+    - FBSDKShareKit (~> 4.27)
+  - FBSDKCoreKit (4.29.0):
+    - Bolts (~> 1.7)
+  - FBSDKShareKit (4.29.0):
+    - FBSDKCoreKit
   - GoogleMaps (2.5.0):
     - GoogleMaps/Maps (= 2.5.0)
   - GoogleMaps/Base (2.5.0)
@@ -9,34 +30,37 @@ PODS:
     - GoogleMaps/Base
   - GooglePlaces (2.5.0):
     - GoogleMaps/Base (= 2.5.0)
-  - Paytm-Payments (0.0.1)
+  - Mixpanel-swift (2.3.1):
+    - Mixpanel-swift/Complete (= 2.3.1)
+  - Mixpanel-swift/Complete (2.3.1)
   - PinCodeTextField (0.1.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.5)
   - AlamofireImage (~> 3.3)
+  - Crashlytics (~> 3.9.3)
+  - Fabric (~> 1.7.2)
+  - FacebookShare (~> 0.3.0)
   - GoogleMaps (~> 2.5.0)
   - GooglePlaces (~> 2.5.0)
-  - Paytm-Payments (from `https://github.com/Paytm-Payments/Paytm_iOS_App_Kit.git`)
-  - PinCodeTextField
-
-EXTERNAL SOURCES:
-  Paytm-Payments:
-    :git: https://github.com/Paytm-Payments/Paytm_iOS_App_Kit.git
-
-CHECKOUT OPTIONS:
-  Paytm-Payments:
-    :commit: f19f85eb769a2be0989f3f4677b5531af3fc9801
-    :git: https://github.com/Paytm-Payments/Paytm_iOS_App_Kit.git
+  - Mixpanel-swift (~> 2.3.1)
+  - PinCodeTextField (~> 0.1.0)
 
 SPEC CHECKSUMS:
-  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
+  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
+  Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
+  FacebookCore: 3ffa190a3f1f96cec0e44d3fc221bc322c595ffa
+  FacebookShare: 0469964297ebd75f052be2c5083389a4208e82b7
+  FBSDKCoreKit: 6f139173dc63a1deaff4430a55f2fe5bb222d2af
+  FBSDKShareKit: 18a2cd118aef11dd657fe7e8b64bae5c719088b2
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
   GooglePlaces: dd70d9d71ea1c7944846afe67de3712c99b30a77
-  Paytm-Payments: 0423396888b7d5b9e69515c7edfe029645218b3a
+  Mixpanel-swift: 836b594b6b536544943e79e61eb34224bf6c7956
   PinCodeTextField: a3c39be58bde3ed1d6888d0fb1d88b0a4a2277cc
 
-PODFILE CHECKSUM: 7814faeb43c8911c527ebb132ec6921358e62962
+PODFILE CHECKSUM: 4d22598093ca9076afba15ee34a6b439ab8a7903
 
 COCOAPODS: 1.3.1

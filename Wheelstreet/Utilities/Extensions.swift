@@ -117,9 +117,10 @@ extension UIApplication {
 
   class func makeNavigationBarTransparent(statusBarStyle: UIStatusBarStyle? = .lightContent) {
       WheelstreetViews.statusBarTo(color: .clear, style: statusBarStyle ?? .lightContent)
-     navigationController().isNavigationBarHidden = false
+      navigationController().isNavigationBarHidden = false
       navigationController().navigationBar.barTintColor = UIColor.white
       navigationController().navigationBar.tintColor = UIColor.white
+      navigationController().navigationBar.backgroundColor = UIColor.clear
       navigationController().navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
      navigationController().navigationBar.setBackgroundImage(UIImage(), for: .default)
      navigationController().navigationBar.shadowImage = UIImage()

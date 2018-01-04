@@ -45,4 +45,7 @@ struct GoKeys {
     static let bike: String = "bike"
     static let pin: String = "pin"
     static let booking: String = "booking"
+    static let currentLat: String = "currentLat"
+    static let currentLng: String = "currentLng"
+  static let help: String = "helpNumber"
 }

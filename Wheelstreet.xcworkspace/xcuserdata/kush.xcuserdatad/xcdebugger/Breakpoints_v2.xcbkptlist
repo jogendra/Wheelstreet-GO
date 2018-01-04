@@ -29,5 +29,84 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Wheelstreet/Views/ViewControllers/BikeKMPhotoViewController/BikeKMPhotoViewController.swift"
+            timestampString = "536622733.015939"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "goToBikePIN(withImage:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Wheelstreet.BikeKMPhotoViewController.goToBikePIN(withImage: __ObjC.UIImage) -&gt; ()"
+                  moduleName = "Wheelstreet"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///MyLibrary/Apps/ProjectApps/Wheelstreet/Wheelstreet/Views/ViewControllers/BikeKMPhotoViewController/BikeKMPhotoViewController.swift"
+                  timestampString = "536678908.958104"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "179"
+                  endingLineNumber = "179"
+                  offsetFromSymbolStart = "1128">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "implicit closure #1 : @autoclosure () throws -&gt; Swift.Optional&lt;Swift.Bool&gt; in Wheelstreet.BikeKMPhotoViewController.goToBikePIN(withImage: __ObjC.UIImage) -&gt; ()"
+                  moduleName = "Wheelstreet"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///MyLibrary/Apps/ProjectApps/Wheelstreet/Wheelstreet/Views/ViewControllers/BikeKMPhotoViewController/BikeKMPhotoViewController.swift"
+                  timestampString = "536678908.963096"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "179"
+                  endingLineNumber = "179"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Optional&lt;Wheelstreet.GoReading&gt;, Swift.Optional&lt;Swift.Int&gt;, Swift.Optional&lt;Swift.Array&lt;Wheelstreet.GOSafeLocation&gt;&gt;, Swift.Optional&lt;Wheelstreet.GOTrip&gt;, Wheelstreet.WheelstreetAPIStatus) -&gt; () in Wheelstreet.BikeKMPhotoViewController.goToBikePIN(withImage: __ObjC.UIImage) -&gt; ()"
+                  moduleName = "Wheelstreet"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///MyLibrary/Apps/ProjectApps/Wheelstreet/Wheelstreet/Views/ViewControllers/BikeKMPhotoViewController/BikeKMPhotoViewController.swift"
+                  timestampString = "536678908.967567"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "180"
+                  endingLineNumber = "180"
+                  offsetFromSymbolStart = "52">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Wheelstreet/Views/ViewControllers/OnTripViewController/OnTripViewController.swift"
+            timestampString = "536650394.252537"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
+            landmarkName = "setTimerWithStartTime(startTime:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

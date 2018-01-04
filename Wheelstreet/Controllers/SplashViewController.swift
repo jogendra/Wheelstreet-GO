@@ -41,14 +41,15 @@ class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
 
-      sendOTPView?.becomeFirstResponder()
+        sendOTPView?.enterOTPMobileNumberTextField.becomeFirstResponder()
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
-        sendOTPView?.enterOTPMobileNumberTextField.resignFirstResponder()
-        enterOTPView?.OTPEnterTextField.resignFirstResponder()
-    }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    view.endEditing(true)
+    sendOTPView?.enterOTPMobileNumberTextField.resignFirstResponder()
+  }
 
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,6 +64,11 @@ class SplashViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
+
+        sendOTPView?.enterOTPMobileNumberTextField.resignFirstResponder()
+        enterOTPView?.OTPEnterTextField.resignFirstResponder()
+        view.endEditing(true)
+
         self.navigationController?.isNavigationBarHidden = false
         NotificationCenter.default.removeObserver(self)
     }
@@ -74,9 +80,11 @@ class SplashViewController: UIViewController {
         }
         
         guard let sendOTPView = sendOTPView else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         guard let enterOTPView = enterOTPView else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         if keyboardHeight != nil {
@@ -90,9 +98,11 @@ class SplashViewController: UIViewController {
     
     @objc func keyboardWillHide(_ notification: Notification) {
         guard let sendOTPView = sendOTPView else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         guard let enterOTPView = enterOTPView else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         UIView.animate(withDuration: 0.3, animations: {
@@ -104,18 +114,18 @@ class SplashViewController: UIViewController {
     }
     
     @objc func skipButtonTapped(_ sender: Any) {
+        view.endEditing(true)
         UserDefaults.standard.set(true, forKey: GoKeys.hasUserSkipped)
         UserDefaults.standard.set(false, forKey: GoKeys.isUserLoggedIn)
-
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-          appDelegate.setMapAsRoot()
-        }
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.checkLoginAndSetRoot()
     }
     
     @objc func signinOtherAccountButtonTapped(_ sender: Any) {
         self.navigationController?.isNavigationBarHidden = false
         let storyboard = UIStoryboard(name: "User", bundle: nil)
         guard let signinViewController = storyboard.instantiateViewController(withIdentifier: "uservc") as? UserViewController else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         signinViewController.userMobileNumber = self.mobileNumber
@@ -125,12 +135,14 @@ class SplashViewController: UIViewController {
     @objc func sendOTPAction(_ sender: Any) {
         
         guard let sendOTPView = sendOTPView else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         
         enteredOTPNumberString = sendOTPView.enterOTPMobileNumberTextField.text
         
         guard let enteredOTPNumberString = enteredOTPNumberString else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
 
@@ -140,10 +152,11 @@ class SplashViewController: UIViewController {
             WheelstreetViews.bluredAlertView(title: "Alert", message: "Please enter 10 digit valid mobile number")
             return
         }
-        
+
+      goLogoImageView.addPulseAnimation(from: 0.4, to: 1, duration: 0.8, key: "opacity")
         WheelstreetAPI.verifyEnteredOTP(params: params, completion: { parsedJSON, statusCode, error, code in
             if error != nil {
-                self.view.makeToast(message: "Error. Please try again")
+                self.view.showToast(message: "Error. Please try again")
             } else {
                 if let data = parsedJSON, let serverResponseCode = data["status"].int {
                     guard let statusCode = statusCode else {
@@ -174,7 +187,6 @@ class SplashViewController: UIViewController {
             UserDefaults.standard.set(enteredOTP, forKey: GoKeys.userOTP)
             self.goForSignup()
         } else if serverStatusCode == 200 && serverResponseCode == 2 {
-            UserDefaults.standard.set(true, forKey: GoKeys.isUserLoggedIn)
             guard let goUser = goUser else {
                 return
             }
@@ -182,6 +194,7 @@ class SplashViewController: UIViewController {
             GoUserDefaultsService.setProfileData(for: goUser)
             gotoGoHome()
         } else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
     }
@@ -190,6 +203,7 @@ class SplashViewController: UIViewController {
         self.view.endEditing(true)
         enterOTPView?.removeFromSuperview()
         guard let sendOTPView = sendOTPView else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         sendOTPView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: 223.0)
@@ -210,6 +224,7 @@ class SplashViewController: UIViewController {
         self.view.endEditing(true)
         sendOTPView?.removeFromSuperview()
         guard let enterOTPView = enterOTPView else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
 
@@ -224,7 +239,7 @@ class SplashViewController: UIViewController {
         enterOTPView.editNumberForOTPButton.addTarget(self, action: #selector(editNumberButtonTapped(_:)), for: .touchUpInside)
         // enterOTPView.sendOTPDelegate = self
         enterOTPView.layer.opacity = 0.4
-        UIView.animate(withDuration: 3, animations: {
+        UIView.animate(withDuration: 1, animations: {
             enterOTPView.frame = CGRect(x: 0, y: self.view.frame.height - enterOTPView.frame.height, width: self.view.frame.width, height: 200.0)
             self.goLogoImageView.frame = CGRect(x: (self.view.frame.width - self.goLogoImageView.frame.width)/2.0, y: (self.view.frame.height - self.goLogoImageView.frame.height)/2.0, width: 110.0, height: 114.0)
             self.view.addSubview(enterOTPView)
@@ -238,6 +253,7 @@ class SplashViewController: UIViewController {
     func goForSignup() {
         mobileTextFieldShouldEnable = false
         guard let signupViewController = UIStoryboard.userVC() as? UserViewController else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         signupViewController.userEnteredOTP = self.userEnteredOTP
@@ -250,7 +266,6 @@ class SplashViewController: UIViewController {
     
     func gotoGoHome() {
         UserDefaults.standard.set(true, forKey: GoKeys.isUserLoggedIn)
-        UserDefaults.standard.synchronize()
         self.updateUserProfileInformation()
       if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
         appDelegate.checkLoginAndSetRoot()
@@ -292,6 +307,7 @@ class SplashViewController: UIViewController {
     }
     
     func updateUserProfileInformation() {
+      goLogoImageView.addPulseAnimation(from: 0.4, to: 1, duration: 0.8, key: "opacity")
         WheelstreetAPI.getUserProfileDetail(completion: { parsedJSON, statusCode, error in
             switch statusCode {
             default:
@@ -330,10 +346,12 @@ extension SplashViewController: EnterOTPDelegate {
             return
         }
         let params: Parameters = ["source": 3, "mobile": mobileNumber]
-        
+
+      goLogoImageView.addPulseAnimation(from: 0.4, to: 1, duration: 0.8, key: "opacity")
+
         WheelstreetAPI.verifyEnteredOTP(params: params, completion: { parsedJSON, statusCode, error, code in
             if error != nil {
-                self.view.makeToast(message: "Error. Please try again")
+                self.view.showToast(message: "Error. Please try again")
             } else {
                 if let data = parsedJSON, let serverResponseCode = data["status"].int {
                     guard let statusCode = statusCode else {
@@ -355,13 +373,16 @@ extension SplashViewController: EnterOTPDelegate {
     func didTextFieldValueChange(value: String) {
         
         guard let mobileNumber = sendOTPView?.enterOTPMobileNumberTextField.text else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         let params: Parameters = ["source": 3, "mobile": mobileNumber, "otp": value]
         if value.count > 3 {
+          goLogoImageView.addPulseAnimation(from: 0.4, to: 1, duration: 0.8, key: "opacity")
+
             WheelstreetAPI.verifyEnteredOTP(params: params, completion: { parsedJSON, statusCode, error, code in
                 if error != nil {
-                    self.view.makeToast(message: "Error. Please try again")
+                    self.view.showToast(message: "Error. Please try again")
                 } else {
                     if let data = parsedJSON, let serverResponseCode = data["status"].int {
                         guard let statusCode = statusCode else {

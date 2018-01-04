@@ -13,15 +13,16 @@ enum RentType: String {
   case km = "km"
   case time = "time"
   case extraCharge = "extraCharge"
+  case bookedOn = "bookedOn"
 }
 
 class GORent {
   var type : RentType
-  var rent : Double
+  var rent : String
   var rate : Double
   var total : Int
 
-  init(type: RentType, rent: Double, rate: Double, total: Int) {
+  init(type: RentType, rent: String, rate: Double, total: Int) {
     self.type = type
     self.rent = rent
     self.rate = rate
@@ -35,13 +36,15 @@ class GORent {
 
     switch type {
     case .km:
-      self.init(type: type, rent: data["rate"].doubleValue, rate: data["kmRate"].doubleValue, total: data["totalKilometer"].intValue)
+      self.init(type: type, rent: "\(data["rate"].doubleValue)", rate: data["kmRate"].doubleValue, total: data["totalKilometer"].intValue)
     case .time:
-     self.init(type: type, rent: data["rate"].doubleValue, rate: data["hourlyRate"].doubleValue, total: data["totalDuration"].intValue)
+     self.init(type: type, rent: "\(data["rate"].doubleValue)", rate: data["hourlyRate"].doubleValue, total: data["totalDuration"].intValue)
     case .base:
-    self.init(type: type, rent: data.doubleValue, rate: 0, total: 0)
+    self.init(type: type, rent: "\(data.doubleValue)", rate: 0, total: 0)
     case .extraCharge:
-      self.init(type: type, rent: data.doubleValue, rate: 0, total: 0)
+      self.init(type: type, rent: "\(data.doubleValue)", rate: 0, total: 0)
+    case .bookedOn:
+      self.init(type: type, rent: "\(data.doubleValue)", rate: 0, total: 0)
     }
 
   }

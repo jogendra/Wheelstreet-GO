@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,6 +14,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExtraChargesViewController" customModule="Wheelstreet" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="ozK-MO-j4T" id="w2l-YZ-Oeu"/>
+                <outlet property="heightConstraint" destination="Tk6-t2-EMD" id="qzL-aa-zd0"/>
                 <outlet property="nearestLocationsTableView" destination="gyq-0F-cLN" id="xyT-Qo-PZP"/>
                 <outlet property="payButton" destination="zXK-Jg-MJj" id="Cim-F8-bUu"/>
                 <outlet property="view" destination="RsG-Bg-GXM" id="HJz-Sh-xG3"/>
@@ -74,12 +74,15 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gyq-0F-cLN">
-                            <rect key="frame" x="16" y="400" width="343" height="187.5"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="gyq-0F-cLN">
+                            <rect key="frame" x="16" y="400" width="343" height="200"/>
+                            <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="999" constant="200" id="Tk6-t2-EMD"/>
+                            </constraints>
                         </tableView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ozK-MO-j4T">
-                            <rect key="frame" x="16" y="595.5" width="130" height="30"/>
+                            <rect key="frame" x="16" y="622" width="130" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="ozK-MO-j4T" secondAttribute="height" multiplier="13:3" id="5aj-TP-bFv"/>
                             </constraints>
@@ -91,7 +94,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zXK-Jg-MJj">
-                            <rect key="frame" x="155" y="595.5" width="204" height="30"/>
+                            <rect key="frame" x="155" y="622" width="204" height="30"/>
                             <color key="backgroundColor" red="0.098039215690000001" green="0.80784313730000001" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="zXK-Jg-MJj" secondAttribute="height" multiplier="34:5" id="jgw-yz-sYf"/>
@@ -105,8 +108,7 @@
                         </button>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="zXK-Jg-MJj" secondAttribute="bottom" constant="21" id="Dfn-7R-zjC"/>
-                        <constraint firstItem="gyq-0F-cLN" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.29" id="a3W-50-MR5"/>
+                        <constraint firstAttribute="bottom" secondItem="zXK-Jg-MJj" secondAttribute="bottom" constant="22" id="Dfn-7R-zjC"/>
                         <constraint firstAttribute="trailing" secondItem="gyq-0F-cLN" secondAttribute="trailing" constant="16" id="o0l-kw-Gc5"/>
                         <constraint firstItem="j5L-Vd-rmM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="24" id="r2Z-wz-fKK"/>
                     </constraints>
@@ -136,7 +138,7 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="IL5-5k-0m7" secondAttribute="trailing" constant="16" id="O1b-TW-eUn"/>
                 <constraint firstItem="YDw-o2-bVQ" firstAttribute="top" secondItem="j5L-Vd-rmM" secondAttribute="bottom" constant="17" id="Se8-Bx-gIb"/>
                 <constraint firstItem="YDw-o2-bVQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="4" id="SnL-cl-1AE"/>
-                <constraint firstItem="zXK-Jg-MJj" firstAttribute="top" secondItem="gyq-0F-cLN" secondAttribute="bottom" constant="8" id="TCl-tJ-6Vx"/>
+                <constraint firstItem="zXK-Jg-MJj" firstAttribute="top" secondItem="gyq-0F-cLN" secondAttribute="bottom" constant="22" id="TCl-tJ-6Vx"/>
                 <constraint firstItem="yqd-HX-Dtl" firstAttribute="centerX" secondItem="YDw-o2-bVQ" secondAttribute="centerX" id="Tej-x3-Kd7"/>
                 <constraint firstItem="gyq-0F-cLN" firstAttribute="top" secondItem="IL5-5k-0m7" secondAttribute="bottom" constant="8" id="dsA-ZP-56m"/>
                 <constraint firstItem="zXK-Jg-MJj" firstAttribute="trailing" secondItem="gyq-0F-cLN" secondAttribute="trailing" id="eRn-rn-TBj"/>

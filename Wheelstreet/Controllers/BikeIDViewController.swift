@@ -29,21 +29,24 @@ class BikeIDViewController: UIViewController {
     var tappedBike: GoBike?
     var bikeId: Int?
     var bikeReading: GoReading?
-    
-    let locationManager = CLLocationManager()
-    var currentLocation: CLLocation?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManagerSetup()
+
+        bikeIDTextView.keyboardAppearance = .dark
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+
+      if let bikeFareView = self.bikeFareView, !bikeFareView.isDescendant(of: self.view) {
         bikeIDTextView.becomeFirstResponder()
+      }
     }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
+
         bikeIDTextView.resignFirstResponder()
     }
 
@@ -52,25 +55,11 @@ class BikeIDViewController: UIViewController {
 
     UIApplication.makeNavigationBarTransparent()
   }
-    
-    func locationManagerSetup() {
-        // Ask for Authorisation from the User.
-        locationManager.requestAlwaysAuthorization()
-        
-        // For use in foreground
-        locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-        }
-    }
+
     
     func proceedBike(with bike: GoBike, reading: GoReading?) {
         if self.tappedBike != nil {
-            let enterKMVC = EnterKMViewController(nibName: "EnterKMViewController", bundle: nil, type: .start, bookingID: nil, scannedBike: self.tappedBike!, reading: reading)
-            enterKMVC.reading = reading
+            let enterKMVC = EnterKMViewController(nibName: "EnterKMViewController", bundle: nil, type: .start, bookingID: nil, scannedBike: self.tappedBike!, reading: reading!)
           UIApplication.navigationController().pushViewController(enterKMVC, animated: true)
         }
         else {
@@ -81,10 +70,11 @@ class BikeIDViewController: UIViewController {
     
     func goToBikeFareView(bike: GoBike) {
         guard let bikeFareView = bikeFareView else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         bikeFareView.layer.opacity = 0.4
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.6, animations: {
             bikeFareView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
             self.view.addSubview(bikeFareView)
             bikeFareView.bike = bike
@@ -112,12 +102,11 @@ extension BikeIDViewController: PinCodeTextFieldDelegate {
         let value = textField.text ?? ""
         textField.text = textField.text?.uppercased()
         
-//        guard let currentLocation = currentLocation else {
-//            return
-//        }
-        let params: [String : Any] =  ["source": 3, "regNo": value, "lat": 12.89515320, "lng": 77.60747970]
+        var params = Network.defaultParamas()
+        params["regNo"] = value
+
         if value.count > 9 {
-            WheelstreetAPI.checkBike(params: params, completion: { goBike, parsedJSON, statusCode, error in
+            WheelstreetAPI.checkBike(params: params, completion: { goBike, parsedJSON, errorString, statusCode, error in
                 if error != nil {
                     print(error as Any)
                     WheelstreetViews.bluredAlertView(title: "Error", message: "Please try again")
@@ -133,15 +122,14 @@ extension BikeIDViewController: PinCodeTextFieldDelegate {
                         self.bikeReading = reading
                         self.bikeIDDelegate?.getBikeData(goBike: enteredBike)
                         self.proceedBike(with: enteredBike, reading: reading)
-                    case .FALIURE:
-                        guard let responseError = parsedJSON?["error"].string else {
-                            return
-                        }
-                        WheelstreetViews.alertView(title: "Alert", message: responseError)
-                        self.bikeIDTextView.text = nil
                     default:
-                        WheelstreetViews.alertView(title: "Alert", message: WheelstreetAPI.statusToMessage(statusCode))
-                        self.bikeIDTextView.text = nil
+                      if let errorString = errorString {
+                        WheelstreetViews.alertView(title: "Alert", message: errorString)
+                      }
+                      else {
+                        WheelstreetViews.somethingWentWrongAlertView()
+                      }
+                      self.bikeIDTextView.text = nil
                     }
                 }
             })
@@ -157,12 +145,6 @@ extension BikeIDViewController: PinCodeTextFieldDelegate {
     }
 }
 
-extension BikeIDViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        currentLocation = manager.location
-    }
-}
-
 extension BikeIDViewController: BikeFareViewDelegate {
   func didTapFareDetail(bike: GoBike) {
     let fareDetailsVC = FareDetailsViewController(nibName: "FareDetailsViewController", bundle: nil, bike: bike)
@@ -170,7 +152,7 @@ extension BikeIDViewController: BikeFareViewDelegate {
   }
 
     func didTapProceed() {
-        let enterKMVC = EnterKMViewController(nibName: "EnterKMViewController", bundle: nil, type: .start, bookingID: nil, scannedBike: self.tappedBike, reading: self.bikeReading)
+      let enterKMVC = EnterKMViewController(nibName: "EnterKMViewController", bundle: nil, type: .start, bookingID: nil, scannedBike: self.tappedBike, reading: self.bikeReading!)
         enterKMVC.reading = self.bikeReading
       UIApplication.navigationController().pushViewController(enterKMVC, animated: true)
     }

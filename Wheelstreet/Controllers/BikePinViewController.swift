@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Mixpanel
 import AVFoundation
 
 class BikePinViewController: UIViewController {
@@ -66,6 +67,7 @@ class BikePinViewController: UIViewController {
     
     func setBikePin() {
         guard let bikePin = self.bikePin else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
 
@@ -75,6 +77,7 @@ class BikePinViewController: UIViewController {
     
     @IBAction func didTapUseFlash(_ sender: Any) {
         guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         if (captureDevice.hasTorch) {
@@ -126,7 +129,14 @@ class BikePinViewController: UIViewController {
     }
     
     @IBAction func didTapGo(_ sender: Any) {
-        goOnTrip()
+      if let regNo = bookingData?.bike.regNo {
+        Mixpanel.mainInstance().track(event: GoMixPanelEvents.goGotTheKey, properties: ["Bike Reg No": regNo])
+      }
+      else {
+        Mixpanel.mainInstance().track(event: GoMixPanelEvents.goGotTheKey)
+      }
+
+      goOnTrip()
     }
     
     @IBAction func didTapUnableFindKey(_ sender: Any) {

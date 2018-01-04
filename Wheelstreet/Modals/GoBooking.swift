@@ -37,6 +37,8 @@ class GOBooking {
   var onGoingDuration : String?
   var minuteOffer : Int?
   var safeLocations: [GOSafeLocation] = []
+  var documents: [String: URL]?
+
 
   required init(data: JSON, bike: GoBike? = nil, user: GoUser? = nil) {
     bookingId = data["bookingId"].object as! Int
@@ -74,7 +76,6 @@ class GOBooking {
     if let endKmData = data["endKm"].object as? Int {
       endKm = endKmData
     }
-
     bookingStatus = GOBookingStatus(rawValue: data["bookingStatus"].string ?? "Booked")
     paymentDetails = data["paymentDetails"].array
     if let rentData = data["rent"].dictionary  {
@@ -92,7 +93,16 @@ class GOBooking {
       let location = GOSafeLocation(locationTitle: key, data: value)
       self.safeLocations.append(location)
     }
-  }
 
+    if let documentsData = data["documents"].dictionary {
+      self.documents = [:]
+      for (key, value) in documentsData {
+        if let value = value.object as? String, let url = URL(string: value) {
+          self.documents![key] = url
+        }
+      }
+    }
+  }
+  
 }
 

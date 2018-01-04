@@ -49,6 +49,12 @@ class FareDetailsViewController: UIViewController {
     getFareDetails()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    WheelstreetViews.statusBarToDefault()
+  }
+
   func setupInitialViews() {
     labelBaseFare.text = ""
     labelPerKm.text = ""

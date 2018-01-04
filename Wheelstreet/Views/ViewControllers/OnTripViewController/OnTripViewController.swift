@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SafariServices
+import Mixpanel
 
 fileprivate enum Defaults {
   static let cornerRadius: CGFloat = 4.0
@@ -64,11 +66,30 @@ class OnTripViewController: UIViewController {
     if let booking = self.booking {
       self.updateViews(withBooking: booking)
     }
+    
+    Mixpanel.mainInstance().track(event: GoMixPanelEvents.goTripStart, properties: ["Booking ID": booking.bookingId])
   }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
+    self.navigationController?.isNavigationBarHidden = false
+    self.navigationController?.navigationBar.barTintColor = UIColor.white
+    self.navigationController?.navigationBar.backgroundColor = UIColor.white
+    self.navigationController?.navigationBar.titleTextAttributes = [
+      NSAttributedStringKey.foregroundColor: UIColor.black,
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
+    ]
+    self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    self.navigationController?.navigationBar.shadowImage = UIImage()
+    self.navigationController?.navigationBar.barStyle = .default
+
+    if #available(iOS 11.0, *) {
+      self.navigationController?.navigationBar.prefersLargeTitles = true
+    } else {
+
+    }
+    self.title = "On Trip"
   }
 
   fileprivate func setUpInitialViews() {
@@ -76,8 +97,6 @@ class OnTripViewController: UIViewController {
     endTripButton.layer.masksToBounds = true
     endTripButton.layer.borderWidth = Defaults.borderWidth
     endTripButton.layer.borderColor = UIColor.appThemeColor.cgColor
-
-
 
     timerLabel.text = ""
     minuteChargeLabel.text = "₹1/min"
@@ -123,11 +142,10 @@ class OnTripViewController: UIViewController {
       stopTimer()
       timerLabel.text = ""
     }
-
   }
 
   func setTimerWithStartTime(startTime: Int) {
-    let diff = Int(Date().timeIntervalSince1970) - startTime
+    let diff = Int(Date().addingTimeInterval(TimeInterval(19800)).timeIntervalSince1970) - startTime
     tripTime = diff
   }
 
@@ -180,34 +198,43 @@ class OnTripViewController: UIViewController {
 
   func attemptToEndTrip() {
     if let booking = self.booking {
-      WheelstreetAPI.dropBike(forBookingID: booking.bookingId, forceDrop: false, showEndKm: true, completion: { (reading, extraCharge, safeLocations, trip, status) in
+      WheelstreetAPI.dropBike(forBookingID: booking.bookingId, completion: { (readings, extraCharge, safeLocations, trip, status) in
         guard status == .SUCCESS else {
           WheelstreetViews.makeToast(message: WheelstreetAPI.statusToMessage(status))
           return
         }
 
-        if let reading = reading {
+        if let reading = readings, extraCharge == nil {
           let enterKMVC = EnterKMViewController(nibName: "EnterKMViewController", bundle: nil, type: .end, bookingID: "\(self.booking.bookingId)", scannedBike: self.booking.bike, reading: reading)
+          Mixpanel.mainInstance().track(event: GoMixPanelEvents.goEndTrip, properties: [
+            "Booking ID": self.booking.bookingId, "In SafeLocation": true, "Entered KM": false])
           UIApplication.navigationController().pushViewController(enterKMVC, animated: true)
           return
         }
 
-        if let extraCharge = extraCharge, let safeLocations = safeLocations {
-          let extraChargesScreen = ExtraChargesViewController(nibName: "ExtraChargesViewController", bundle: nil, extraCharge: extraCharge, safeLocations: safeLocations, booking: self.booking!)
+        if let extraCharge = extraCharge, let safeLocation = safeLocations, let readings = readings {
+          let extraChargesScreen = ExtraChargesViewController(nibName: "ExtraChargesViewController", bundle: nil, extraCharge: extraCharge, safeLocations: safeLocation, booking: self.booking!, reading: readings)
+          WheelstreetViews.statusBarToDefault()
+          Mixpanel.mainInstance().track(event: GoMixPanelEvents.goEndTrip, properties: [
+            "Booking ID": self.booking.bookingId, "In SafeLocation": false, "Entered KM": false])
           UIApplication.navigationController().present(extraChargesScreen, animated: true, completion: {
             return
           })
         }
 
         if let trip = trip {
-        let endTripViewController = EndTripViewController(nibName: "EndTripViewController", bundle: nil, trip: trip)
-        UIApplication.navigationController().present(endTripViewController, animated: true, completion: {
-            return
-          })
+          Mixpanel.mainInstance().track(event: GoMixPanelEvents.goEndTrip, properties: [
+            "Booking ID": self.booking.bookingId, "In SafeLocation": true, "Entered KM": true])
+          let endTripViewController = EndTripViewController(nibName: "EndTripViewController", bundle: nil, trip: trip)
+          let appDelegate = UIApplication.shared.delegate as! AppDelegate
+          UIApplication.shared.statusBarStyle = .default
+          UIView.transition(with: appDelegate.window!, duration: 0.5, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            appDelegate.setAppWitRootAs(vc: endTripViewController)
+          }) { (canceled) in
+            appDelegate.window!.makeKeyAndVisible()
+          }
         }
-
       })
-
     }
     else {
       WheelstreetViews.alertView(title: "Something went wrong", message: "Try Again Later")
@@ -217,14 +244,50 @@ class OnTripViewController: UIViewController {
 
 
   @IBAction func didTapRefuelButton(_ sender: Any) {
+      Mixpanel.mainInstance().track(event: GoMixPanelEvents.goRefuel, properties: ["Amount": self.booking.totalAmount ?? "", "Booking ID": self.booking.bookingId])
       presentRefuelView()
   }
 
   @IBAction func didTapDocumentsButton(_ sender: Any) {
+    Mixpanel.mainInstance().track(event: GoMixPanelEvents.goDocuments, properties: ["Booking ID": self.booking.bookingId])
+    if let documents = booking.documents, !documents.isEmpty {
+      guard let topViewController = UIApplication.topViewController() else {
+        WheelstreetViews.somethingWentWrongAlertView()
+        return
+      }
 
+      if documents.count == 1 {
+        let safariViewController = SFSafariViewController(url: documents.first!.value)
+        topViewController.present(safariViewController, animated: true, completion: nil)
+      }
+      else {
+        let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        if let alertVCSubView = alertVC.view.subviews.first?.subviews.first?.subviews.first {
+          alertVCSubView.backgroundColor = UIColor.white
+        }
+
+        for (key, url) in documents {
+          let action = UIAlertAction(title: key, style: .default, handler: { [weak self] (action) in
+            let safariViewController = SFSafariViewController(url: url)
+            topViewController.present(safariViewController, animated: true, completion: nil)
+          })
+          action.setValue(UIColor.appThemeColor, forKey: GoKeys.alertTitleKey)
+          alertVC.addAction(action)
+        }
+
+        let cancelAlert = UIAlertAction(title: GoDefaults.cancelString, style: .cancel, handler: nil)
+        cancelAlert.setValue(UIColor.appThemeColor, forKey: GoKeys.alertTitleKey)
+        alertVC.addAction(cancelAlert)
+
+        topViewController.present(alertVC, animated: true, completion: nil)
+      }
+    }
+    
   }
 
   @IBAction func didSupportButton(_ sender: Any) {
+    Mixpanel.mainInstance().track(event: GoMixPanelEvents.goCallOnTrip, properties: [
+      "Booking ID": self.booking.bookingId])
     WheelstreetCommon.help()
   }
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Mixpanel
 
 fileprivate enum Defaults {
   static let uploadString = "Upload"
@@ -130,12 +131,12 @@ class GOKYCUploadViewController: UIViewController {
       break
     }
 
-    title = titleText
     titleLabel.text = titleText
   }
 
 
   fileprivate func presentUploadImageSheet(cancelationhandler: @escaping((_ action: UIAlertAction) -> ())) {
+    Mixpanel.mainInstance().time(event: GoMixPanelEvents.goUploadDL)
 
     let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     let topViewController = UIApplication.topViewController()
@@ -212,7 +213,12 @@ class GOKYCUploadViewController: UIViewController {
     WheelstreetAPI.uploadKYC(frontImage: self.frontImage!, backImage: self.backImage!) { (message, status) in
       if let message = message {
         UIApplication.navigationController().presentedViewController?.dismiss(animated: true, completion: {
-          WheelstreetViews.alertView(title: message, message: message)
+          if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.getHomePageData()
+          }
+          else {
+            WheelstreetViews.alertView(title: message, message: message)
+          }
         })
       }
       else {
@@ -236,8 +242,11 @@ class GOKYCUploadViewController: UIViewController {
       case .front:
         self.frontImage = self.pickedImage
         type = .back
+        Mixpanel.mainInstance().track(event: GoMixPanelEvents.goUploadDL, properties: ["Front Uploaded": true, "Back Uploaded": false])
+        Mixpanel.mainInstance().time(event: GoMixPanelEvents.goUploadDL)
       case.back:
         self.backImage = self.pickedImage
+        Mixpanel.mainInstance().track(event: GoMixPanelEvents.goUploadDL, properties: ["Front Uploaded": true, "Back Uploaded": true])
         uploadImages()
       case .standard:
         break

@@ -12,6 +12,12 @@ enum GOPaymentMode: String {
   case paytm = "Paytm"
 }
 
+enum GOPaymentStatus: Int {
+  case success = 1
+  case faliure = -1
+  case initiate = 0
+}
+
 class GOPayment {
   var paymentMode: GOPaymentMode
   var amount: String

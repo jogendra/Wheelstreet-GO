@@ -13,12 +13,13 @@ import GooglePlaces
 protocol GoMapViewDelegate: class {
     func didTapMarker(_ mapView: GMSMapView, didTap marker: GMSMarker)
     func didTapOnMap(_ mapView: GMSMapView)
+    func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker)
+    func mapView(_ mapView: GMSMapView, didBeginDragging marker: GMSMarker)
 }
 
 class GoMapView: GMSMapView {
 
     weak var goDelegate: GoMapViewDelegate?
-
     var locationManager = CLLocationManager()
     var currentLocation: CLLocation?
     var placesClient: GMSPlacesClient!
@@ -51,9 +52,16 @@ extension GoMapView: GMSMapViewDelegate {
     return true
   }
     
-    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        goDelegate?.didTapOnMap(mapView)
-    }
+  func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
+    goDelegate?.didTapOnMap(mapView)
+  }
 
+  func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker) {
+    goDelegate?.mapView(mapView, didEndDragging: marker)
+  }
+
+  func mapView(_ mapView: GMSMapView, didBeginDragging marker: GMSMarker) {
+    goDelegate?.mapView(mapView, didBeginDragging: marker)
+  }
 }
 

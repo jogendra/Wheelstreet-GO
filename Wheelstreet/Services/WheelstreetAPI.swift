@@ -10,13 +10,13 @@ import Foundation
 import Alamofire
 
 
-#if DEVELOPMENT
-  fileprivate var testing: Bool = true
-#else
-  fileprivate var testing: Bool = false
-#endif
+//#if DEVELOPMENT
+//  fileprivate var testing: Bool = true
+//#else
+fileprivate var testing: Bool = false
+//#endif
 
-public var apiURL = testing ? WheelstreetURLs.serverURL : WheelstreetURLs.testingServerURL
+public var apiURL = testing ? WheelstreetURLs.testingServerURL : WheelstreetURLs.serverURL
 
 
 public enum Endpoints: String {
@@ -45,6 +45,7 @@ public enum Endpoints: String {
   case retry = "retry/"
   case kyc = "kyc/"
   case applyShare = "apply-share/"
+  case helplineNumber = "helpline-number"
 
   // MARK: CDN
   case images = "images/"
@@ -115,6 +116,7 @@ class WheelstreetAPI {
   class func getFareDetails(forBike bike: GoBike, completion: @escaping((GoFareDetails?, _ minuteOffer: Int?, _ minuteOfferMessage: String?, _ extraCharges: Int?, _ safeLocations: [GOSafeLocation]?, WheelstreetAPIStatus)-> Void)) {
       guard Reachability.isConnectedToNetwork() == true else {
         ActivityIndicator.shared.hideProgressView()
+        WheelstreetViews.noInternetConnectionAlertView()
         completion(nil, nil, nil, nil, nil, .ERR_APP_HTTP_ERROR)
         return
       }
@@ -133,7 +135,7 @@ class WheelstreetAPI {
             if let fareData = data?[GoKeys.data] {
               goFareDetails = GoFareDetails(data: fareData)
 
-              if let dropLocation = fareData["dropLocation"].dictionary {
+              if let dropLocation = fareData["safeLocation"].dictionary {
                 goSafeLocations = []
                 for (key, value) in  dropLocation {
                   let location = GOSafeLocation(locationTitle: key, data: value)
@@ -160,6 +162,7 @@ class WheelstreetAPI {
   class func uploadKYC(frontImage: UIImage, backImage: UIImage, completion: @escaping((_ statusMessage: String?, WheelstreetAPIStatus)-> Void)) {
     guard Reachability.isConnectedToNetwork() == true else {
       ActivityIndicator.shared.hideProgressView()
+      WheelstreetViews.noInternetConnectionAlertView()
       completion(nil, .ERR_APP_HTTP_ERROR)
       return
     }
@@ -183,15 +186,47 @@ class WheelstreetAPI {
     })
   }
 
+  class func getHelpLineNumber() {
+    guard Reachability.isConnectedToNetwork() == true else {
+      ActivityIndicator.shared.hideProgressView()
+      if UserDefaults.standard.value(forKey: GoKeys.help) == nil {
+        UserDefaults.standard.set("+91-8088400500", forKey: GoKeys.help)
+      }
+      return
+    }
+
+    Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.go.rawValue + Endpoints.helplineNumber.rawValue, params: nil, withHeader: false, showActivityIndicator: false) { (data, code, error) in
+
+      ActivityIndicator.shared.hideProgressView()
+
+      guard let data = data else {
+        if UserDefaults.standard.value(forKey: GoKeys.help) == nil {
+          UserDefaults.standard.set("+91-8088400500", forKey: GoKeys.help)
+        }
+        return
+      }
+
+      if let number = data[GoKeys.data].object as? String {
+        UserDefaults.standard.set(number, forKey: GoKeys.help)
+      }
+      else {
+        if UserDefaults.standard.value(forKey: GoKeys.help) == nil {
+          UserDefaults.standard.set("+91-8088400500", forKey: GoKeys.help)
+        }
+      }
+    }
+  }
+
   class func homePageData(completion: @escaping((GOBooking?, GOTrip?, [GoBike]?, _ kycStatus: Int?, WheelstreetAPIStatus)-> Void)) {
 
     guard Reachability.isConnectedToNetwork() == true else {
       ActivityIndicator.shared.hideProgressView()
+      WheelstreetViews.noInternetConnectionAlertView()
       completion(nil, nil, nil, nil, .ERR_APP_HTTP_ERROR)
       return
     }
 
-    Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.go.rawValue + Endpoints.homePageData.rawValue, params: nil, withHeader: true) { (data, code, error) in
+    Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.go.rawValue + Endpoints.homePageData.rawValue, params: nil, withHeader: true, showActivityIndicator: false) { (data, code, error) in
 
       ActivityIndicator.shared.hideProgressView()
 
@@ -220,6 +255,9 @@ class WheelstreetAPI {
           }
         }
         completion(nil, nil, goBikes, kycStatus, .SUCCESS)
+      case -1:
+        Location.shared.locationManagerSetup()
+        homePageData(completion: completion)
       default:
         break
       }
@@ -227,15 +265,21 @@ class WheelstreetAPI {
     }
   }
 
-  class func dropBike(forBookingID id: Int, forceDrop: Bool, showEndKm: Bool,  completion: @escaping((GoReading? , _ extraCharge: Int? , [GOSafeLocation]?, GOTrip?, WheelstreetAPIStatus)-> Void)) {
+  class func dropBike(forBookingID id: Int, forceDrop: Bool? = nil, completion: @escaping((GoReading?, _ extraCharge: Int?, [GOSafeLocation]?, GOTrip?, WheelstreetAPIStatus)-> Void)) {
 
     guard Reachability.isConnectedToNetwork() == true else {
       ActivityIndicator.shared.hideProgressView()
+      WheelstreetViews.noInternetConnectionAlertView()
       completion(nil, nil, nil, nil, .ERR_APP_HTTP_ERROR)
       return
     }
-
-    let params: Dictionary<String, Any> = ["bookingId": id, "forceDrop": forceDrop, "showEndKm": showEndKm, "accessToken":  Utils().checkNSUserDefault(GoKeys.accessToken), "source": 3, "lat": 12.8951532, "lng": 77.6074797]
+    
+    var params = Network.defaultParamas()
+    params["bookingId"] = id
+    if let forceDrop = forceDrop {
+      params["forceDrop"] = forceDrop
+    }
+    params["accessToken"] = Utils().checkNSUserDefault(GoKeys.accessToken)
 
     Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.go.rawValue + Endpoints.drop.rawValue, params: params, withHeader: true) { (data, code, error) in
 
@@ -245,30 +289,31 @@ class WheelstreetAPI {
         completion(nil, nil, nil, nil, .NO_CONTENT_FOUND)
         return
       }
-      if showEndKm {
+
         if data[GoKeys.statusCode].intValue == -9 {
-          let readings = GoReading(data: data["error"])
+          let readings = GoReading(data: data["error"]["km"])
           completion(readings, nil, nil, nil, .SUCCESS)
         }
         else if data[GoKeys.statusCode].intValue == -10 {
           var extraCharge: Int?
           var safeLocations: [GOSafeLocation] = []
+          var reading: GoReading?
           for (key, value) in data["error"].dictionaryValue {
             if key == "extraCharge" {
               extraCharge = value.int
             }
-            else {
-              safeLocations.append(GOSafeLocation(locationTitle: key, data: value))
-              completion(nil, extraCharge, safeLocations, nil, .SUCCESS)
+            else if key == "safeLocation" {
+              for (safeKey, safeValue) in value.dictionaryValue {
+                safeLocations.append(GOSafeLocation(locationTitle: safeKey, data: safeValue))
+              }
+            }
+            else if key == "km" {
+              reading = GoReading(data: value)
             }
           }
+          completion(reading, extraCharge, safeLocations, nil, .SUCCESS)
         }
-        else {
-          completion(nil, nil, nil, nil, .UNKOWN_ERROR)
-        }
-      }
-      else {
-        if data[GoKeys.statusCode].intValue == 1 {
+        else if data[GoKeys.statusCode].intValue == 1 {
           let trip = GOTrip(data: data["data"])
           completion(nil, nil, nil, trip, .SUCCESS)
         }
@@ -276,18 +321,24 @@ class WheelstreetAPI {
           completion(nil, nil, nil, nil, .UNKOWN_ERROR)
         }
       }
-      }
   }
 
-  class func dropBikeWithEndKM(forBookingID id: Int, endKm: Int, endKmImage: UIImage, forceDrop: Bool, showEndKm: Bool,  completion: @escaping((GoReading? , _ extraCharge: Int? , [GOSafeLocation]?, GOTrip?, WheelstreetAPIStatus)-> Void)) {
+  class func dropBikeWithEndKM(forBookingID id: Int, endKm: Int, endKmImage: UIImage, forceDrop: Bool? = nil, completion: @escaping((GoReading? , _ extraCharge: Int? , [GOSafeLocation]?, GOTrip?, WheelstreetAPIStatus)-> Void)) {
 
     guard Reachability.isConnectedToNetwork() == true else {
       ActivityIndicator.shared.hideProgressView()
+      WheelstreetViews.noInternetConnectionAlertView()
       completion(nil, nil, nil, nil, .ERR_APP_HTTP_ERROR)
       return
     }
-
-    let params: Dictionary<String, Any> = ["bookingId": id, "forceDrop": forceDrop, "showEndKm": showEndKm,"endKm": endKm, "accessToken":  Utils().checkNSUserDefault(GoKeys.accessToken), "source": 3, "lat": 12.8951532, "lng": 77.6074797]
+    
+    var params = Network.defaultParamas()
+    params["bookingId"] = id
+    if let forceDrop = forceDrop {
+      params["forceDrop"] = forceDrop
+    }
+    params["endKm"] = endKm
+    params["accessToken"] = Utils().checkNSUserDefault(GoKeys.accessToken)
 
     Network.shared.uploadFile(apiURL + Endpoints.v1.rawValue + Endpoints.go.rawValue + Endpoints.drop.rawValue, image: endKmImage, imageName: "endKmImage", params: params, withHeader: true, completion: { (data, code, error) in
 
@@ -297,36 +348,36 @@ class WheelstreetAPI {
         completion(nil, nil, nil, nil, .NO_CONTENT_FOUND)
         return
       }
-      if showEndKm {
-        if data[GoKeys.statusCode].intValue == -9 {
-          let readings = GoReading(data: data["error"])
-          completion(readings, nil, nil, nil, .SUCCESS)
-        }
-        else if data[GoKeys.statusCode].intValue == -10 {
-          var extraCharge: Int?
-          var safeLocations: [GOSafeLocation] = []
-          for (key, value) in data["error"].dictionaryValue {
-            if key == "extraCharge" {
-              extraCharge = value.int
-            }
-            else {
-              safeLocations.append(GOSafeLocation(locationTitle: key, data: value))
-              completion(nil, extraCharge, safeLocations, nil, .SUCCESS)
+
+      if data[GoKeys.statusCode].intValue == -9 {
+        let readings = GoReading(data: data["error"])
+        completion(readings, nil, nil, nil, .SUCCESS)
+      }
+      else if data[GoKeys.statusCode].intValue == -10 {
+        var extraCharge: Int?
+        var safeLocations: [GOSafeLocation] = []
+        var reading: GoReading?
+        for (key, value) in data["error"].dictionaryValue {
+          if key == "extraCharge" {
+            extraCharge = value.int
+          }
+          else if key == "safeLocation" {
+            for (safeKey, safeValue) in value.dictionaryValue {
+              safeLocations.append(GOSafeLocation(locationTitle: safeKey, data: safeValue))
             }
           }
+          else if key == "km" {
+            reading = GoReading(data: value)
+          }
         }
-        else {
-          completion(nil, nil, nil, nil, .UNKOWN_ERROR)
-        }
+        completion(reading, extraCharge, safeLocations, nil, .SUCCESS)
+      }
+      else if data[GoKeys.statusCode].intValue == 1 {
+        let trip = GOTrip(data: data["data"])
+        completion(nil, nil, nil, trip, .SUCCESS)
       }
       else {
-        if data[GoKeys.statusCode].intValue == 1 {
-          let trip = GOTrip(data: data["data"])
-          completion(nil, nil, nil, trip, .SUCCESS)
-        }
-        else {
-          completion(nil, nil, nil, nil, .UNKOWN_ERROR)
-        }
+        completion(nil, nil, nil, nil, .UNKOWN_ERROR)
       }
     }, progressBlock: {_ in 
       // Show Loader Here
@@ -337,6 +388,7 @@ class WheelstreetAPI {
 
     guard Reachability.isConnectedToNetwork() == true else {
       ActivityIndicator.shared.hideProgressView()
+      WheelstreetViews.noInternetConnectionAlertView()
       completion(nil, .ERR_APP_HTTP_ERROR)
       return
     }
@@ -371,7 +423,7 @@ class WheelstreetAPI {
       return
     }
 
-    Network.shared.postWithFormData(url: WheelstreetURLs.stagingURL + Endpoints.payment.rawValue + Endpoints.generateChecksum.rawValue, params: oderData, withHeader: true) { (data, code, error) in
+    Network.shared.postWithFormData(url: testing ? WheelstreetURLs.stagingURL : WheelstreetURLs.webURL + Endpoints.payment.rawValue + Endpoints.generateChecksum.rawValue, params: oderData, withHeader: true) { (data, code, error) in
 
       ActivityIndicator.shared.hideProgressView()
 
@@ -389,12 +441,13 @@ class WheelstreetAPI {
 
     guard Reachability.isConnectedToNetwork() == true else {
       ActivityIndicator.shared.hideProgressView()
+      WheelstreetViews.noInternetConnectionAlertView()
       completion(nil, .ERR_APP_HTTP_ERROR)
       return
     }
 
     let params: Dictionary<String, Any> = ["orderId": id, "type": 6]
-
+  
     Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.payment.rawValue + Endpoints.details.rawValue, params: params, withHeader: true) { (data, code, error) in
 
       ActivityIndicator.shared.hideProgressView()
@@ -405,7 +458,8 @@ class WheelstreetAPI {
       }
 
       if data[GoKeys.statusCode].intValue == 1 {
-        let trip = GOTrip(data: data["data"])
+       let orderId = data[GoKeys.data]["paymentId"].object as! Int
+        let trip = GOTrip(orderId: orderId, data: data[GoKeys.data]["booking"], status: GOPaymentStatus(rawValue: data[GoKeys.data][GoKeys.statusCode].object as! Int) ?? .initiate)
         completion(trip, .SUCCESS)
       }
       else if data[GoKeys.statusCode].intValue == 0 {
@@ -417,7 +471,7 @@ class WheelstreetAPI {
     }
   }
 
-  class func sharedOnFacebook(bookingId: String, postId: String, completion: @escaping((_ trip: GOTrip?, _ errorMessage: String?, WheelstreetAPIStatus)-> Void)) {
+  class func sharedOnFacebook(bookingId: String, postId: Int, completion: @escaping((_ trip: GOTrip?, _ errorMessage: String?, WheelstreetAPIStatus)-> Void)) {
     guard Reachability.isConnectedToNetwork() == true else {
       ActivityIndicator.shared.hideProgressView()
       return
@@ -477,9 +531,11 @@ class WheelstreetAPI {
     class func getAllBikeLocation(completion: @escaping(([GoBike]?, WheelstreetAPIStatus) -> Void)) {
         guard Reachability.isConnectedToNetwork() == true else {
             ActivityIndicator.shared.hideProgressView()
+            WheelstreetViews.noInternetConnectionAlertView()
             return
         }
         Network.shared.get(apiURL + Endpoints.v1.rawValue + Endpoints.go.rawValue + Endpoints.search.rawValue, params: nil, withHeader: false, completion: { (data, code, error) in
+
             if let code = code {
                 switch WheelstreetAPI.WheelstreetAPIStatusFor(code) {
                 case .SUCCESS:
@@ -506,11 +562,13 @@ class WheelstreetAPI {
     class func verifyEnteredOTP(params: Dictionary<String, Any>, completion: @escaping((_ parsedJSON: JSON?, _ statusCode: Int?, _ error: Error?, WheelstreetAPIStatus) -> Void)) {
         guard Reachability.isConnectedToNetwork() == true else {
             ActivityIndicator.shared.hideProgressView()
+            WheelstreetViews.noInternetConnectionAlertView()
             return
         }
-        Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.user.rawValue + Endpoints.verifyMobileEmail.rawValue, params: params, withHeader: true, completion: { (data, code, error) in
+      
+        Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.user.rawValue + Endpoints.verifyMobileEmail.rawValue, params: params, withHeader: true, showActivityIndicator: false, completion: { (data, code, error) in
             if error != nil {
-                
+                completion(nil, code, error, WheelstreetAPI.WheelstreetAPIStatusFor(code!))
             } else {
                 completion(data, code, error, WheelstreetAPI.WheelstreetAPIStatusFor(code!))
             }
@@ -521,6 +579,7 @@ class WheelstreetAPI {
     class func userSignup(params: Dictionary<String, Any>, completion: @escaping((_ parsedJSON: JSON?, _ statusCode: Int?, _ error: Error?, WheelstreetAPIStatus) -> Void)) {
         guard Reachability.isConnectedToNetwork() == true else {
             ActivityIndicator.shared.hideProgressView()
+            WheelstreetViews.noInternetConnectionAlertView()
             return
         }
         Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.user.rawValue + Endpoints.signUp.rawValue, params: params, withHeader: true, completion: { (data, code, error) in
@@ -535,6 +594,7 @@ class WheelstreetAPI {
     class func userPreSignup(params: Dictionary<String, Any>, completion: @escaping((_ parsedJSON: JSON?, _ statusCode: Int?, _ error: Error?) -> Void)) {
         guard Reachability.isConnectedToNetwork() == true else {
             ActivityIndicator.shared.hideProgressView()
+            WheelstreetViews.noInternetConnectionAlertView()
             return
         }
         Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.user.rawValue + Endpoints.preSignUp.rawValue, params: params, withHeader: true, completion: { (data, code, error) in
@@ -546,6 +606,7 @@ class WheelstreetAPI {
     class func userSignin(params: Dictionary<String, Any>, completion: @escaping((_ parsedJSON: JSON?, _ statusCode: Int?, _ error: Error?, WheelstreetAPIStatus) -> Void)) {
         guard Reachability.isConnectedToNetwork() == true else {
             ActivityIndicator.shared.hideProgressView()
+            WheelstreetViews.noInternetConnectionAlertView()
             return
         }
         Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.user.rawValue + Endpoints.login.rawValue, params: params, withHeader: true, completion: { (data, code, error) in
@@ -558,9 +619,10 @@ class WheelstreetAPI {
     }
     
     // MARK: Check Bike
-    class func checkBike(params: Dictionary<String, Any>, completion: @escaping((GoBike?, JSON?, WheelstreetAPIStatus, Error?) -> Void)) {
+  class func checkBike(params: Dictionary<String, Any>, completion: @escaping((GoBike?, JSON?, _ error: String?, WheelstreetAPIStatus, Error?) -> Void)) {
         guard Reachability.isConnectedToNetwork() == true else {
             ActivityIndicator.shared.hideProgressView()
+            WheelstreetViews.noInternetConnectionAlertView()
             return
         }
         Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.go.rawValue + Endpoints.checkBike.rawValue, params: params, withHeader: false, completion: { (data, code, error) in
@@ -570,14 +632,22 @@ class WheelstreetAPI {
                     var bike: GoBike?
                     if let bikeData = data?[GoKeys.data] {
                         bike = GoBike(data: bikeData)
-                        completion(bike, data, .SUCCESS, nil)
+                        completion(bike, data, nil, .SUCCESS, nil)
                     }
+                    else if let error = data?[GoKeys.error].string {
+                      completion(nil, nil, error, .SUCCESS, nil)
+                  }
                     
                 default:
-                    completion(nil, data, WheelstreetAPI.WheelstreetAPIStatusFor(code), error)
+                  if let error = data?[GoKeys.error].string {
+                    completion(nil, nil, error, .FALIURE, nil)
+                  }
+                  else {
+                    completion(nil, data, "Something Went Wrong", WheelstreetAPI.WheelstreetAPIStatusFor(code), error)
+                  }
                 }
             } else {
-                completion(nil, nil, .UNKOWN_ERROR, error)
+                completion(nil, nil, "Something Went Wrong", .UNKOWN_ERROR, error)
             }
         })
     }
@@ -586,6 +656,7 @@ class WheelstreetAPI {
     class func getUserProfileDetail(completion: @escaping((JSON?, WheelstreetAPIStatus, Error?) -> Void)) {
         guard Reachability.isConnectedToNetwork() == true else {
             ActivityIndicator.shared.hideProgressView()
+            WheelstreetViews.noInternetConnectionAlertView()
             return
         }
         Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.user.rawValue + Endpoints.goProfile.rawValue, params: nil, withHeader: true, completion: { (data, code, error) in
@@ -611,6 +682,7 @@ class WheelstreetAPI {
     class func getScannedBike(params: Dictionary<String, Any>,completion: @escaping((GoBike?, JSON?, WheelstreetAPIStatus, Error?) -> Void)) {
         guard Reachability.isConnectedToNetwork() == true else {
             ActivityIndicator.shared.hideProgressView()
+            WheelstreetViews.noInternetConnectionAlertView()
             return
         }
         Network.shared.post(apiURL + Endpoints.v1.rawValue + Endpoints.go.rawValue + Endpoints.checkBike.rawValue, params: params, withHeader: false, completion: { (data, code, error) in
@@ -636,6 +708,7 @@ class WheelstreetAPI {
         
         guard Reachability.isConnectedToNetwork() == true else {
             ActivityIndicator.shared.hideProgressView()
+            WheelstreetViews.noInternetConnectionAlertView()
             completion(nil, nil, nil, nil, .ERR_APP_HTTP_ERROR)
             return
         }

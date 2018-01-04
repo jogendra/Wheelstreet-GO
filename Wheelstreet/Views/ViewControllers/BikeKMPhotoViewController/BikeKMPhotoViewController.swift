@@ -25,14 +25,16 @@ class BikeKMPhotoViewController: UIViewController {
   var scannedBike: GoBike!
   var type: kmType!
   var bookingID: String?
+  var forceDrop: Bool?
 
-  init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?, type: kmType, scannedBike: GoBike, kmInput: String, bookingID: String?) {
+  init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?, type: kmType, scannedBike: GoBike, kmInput: String, bookingID: String?, forceDrop: Bool? = nil) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
     self.type = type
     self.kmInput = kmInput
     self.scannedBike = scannedBike
     self.bookingID = bookingID
+    self.forceDrop = forceDrop
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -50,6 +52,12 @@ class BikeKMPhotoViewController: UIViewController {
     super.viewWillAppear(animated)
 
     UIApplication.makeNavigationBarTransparent()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    view.endEditing(true)
   }
 
   func initialUISetups() {
@@ -102,11 +110,21 @@ class BikeKMPhotoViewController: UIViewController {
   }
 
   @IBAction func didTapTakePhoto(_ sender: Any) {
+    takePhotoButton.isEnabled = false
     cameraController.captureImage(completion: { (image, error) in
       guard let image = image else {
-        WheelstreetViews.bluredAlertView(title: "Alert", message: error as? String ?? "Camera Capture Error")
+        WheelstreetViews.requestCameraAcess(completion: { (bool) in
+          if bool {
+            self.cameraController.captureSession?.startRunning()
+          }
+          else {
+            WheelstreetViews.somethingWentWrongAlertView()
+          }
+         self.takePhotoButton.isEnabled = true
+        })
         return
       }
+
       self.bikeKMImage = self.cropCapturedImage(image: image)
       guard let bikeKMImage = self.bikeKMImage else {
         WheelstreetViews.bluredAlertView(title: "Error", message: "Image is not loaded")
@@ -134,7 +152,12 @@ class BikeKMPhotoViewController: UIViewController {
               if let bikePinVC = UIStoryboard.bikePinVC() as? BikePinViewController {
                 bikePinVC.bikePin = bikePin
                 bikePinVC.bookingData = bookingData
-                UIApplication.navigationController().pushViewController(bikePinVC, animated: true)
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                UIView.transition(with: appDelegate.window!, duration: 0.5, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                  appDelegate.setAppWitRootAs(vc: bikePinVC)
+                }) { (canceled) in
+                  appDelegate.window!.makeKeyAndVisible()
+                }
               }
             }
           }
@@ -153,7 +176,7 @@ class BikeKMPhotoViewController: UIViewController {
         }
       })
     case .end:
-      WheelstreetAPI.dropBikeWithEndKM(forBookingID: self.bookingID!.toInt()!, endKm: self.kmInput!.toInt()!, endKmImage: image, forceDrop: true, showEndKm: false, completion: { (reading, extraCharge, safeLocations, trip, status) in
+      WheelstreetAPI.dropBikeWithEndKM(forBookingID: self.bookingID!.toInt()!, endKm: self.kmInput!.toInt()!, endKmImage: image, forceDrop: self.forceDrop ?? nil, completion: { (reading, extraCharge, safeLocations, trip, status) in
         guard status == .SUCCESS else {
           WheelstreetViews.makeToast(message: WheelstreetAPI.statusToMessage(status))
           return
@@ -161,11 +184,13 @@ class BikeKMPhotoViewController: UIViewController {
 
         if let trip = trip {
           let endTripViewController = EndTripViewController(nibName: "EndTripViewController", bundle: nil, trip: trip)
-          
           let appDelegate = UIApplication.shared.delegate as! AppDelegate
-          appDelegate.navigationController = UINavigationController(rootViewController: endTripViewController)
-          
-          UIApplication.topViewController()!.present( UIApplication.navigationController(), animated: true, completion: nil)
+          UIApplication.shared.statusBarStyle = .default
+          UIView.transition(with: appDelegate.window!, duration: 0.5, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            appDelegate.setAppWitRootAs(vc: endTripViewController)
+          }) { (canceled) in
+            appDelegate.window!.makeKeyAndVisible()
+          }
         }
       })
     default:

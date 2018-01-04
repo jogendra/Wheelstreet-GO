@@ -10,7 +10,8 @@ import Foundation
 
 struct WheelstreetURLs {
     static let serverURL: String = "https://api.wheelstreet.com/"
-    static let testingServerURL = "https://api.wheelstreet.org/"
-    static let stagingURL = "https://www.wheelstreet.org/"
+    static let testingServerURL = "https://api.wheelstreet.com/"
+    static let stagingURL = "https://www.wheelstreet.com/"
+    static let webURL = "https://www.wheelstreet.com/"
     static let cdnURL: String = "https://cdn.wheelstreet.com/"
 }

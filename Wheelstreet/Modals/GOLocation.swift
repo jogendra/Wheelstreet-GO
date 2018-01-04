@@ -18,6 +18,6 @@ class GOLocation {
   }
 
   convenience init(locationData: JSON) {
-    self.init(latitude: locationData[GoKeys.paramLatitudeKey].doubleValue, longitude: locationData[GoKeys.paramLongitudeKey].doubleValue)
+    self.init(latitude: locationData[GoKeys.latitudeKey].doubleValue, longitude: locationData[GoKeys.longitudeKey].doubleValue)
   }
 }

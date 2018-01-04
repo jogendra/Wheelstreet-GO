@@ -19,11 +19,7 @@ class UserViewController: UIViewController {
     
     @IBOutlet weak var userVCTitle: UILabel!
 
-    @IBOutlet weak var userEmailTextField: HoshiTextField! {
-        didSet {
-            userEmailTextField.delegate = self
-        }
-    }
+    @IBOutlet weak var userEmailTextField: HoshiTextField!
     
     @IBOutlet weak var userNameTextField: HoshiTextField!
     
@@ -76,14 +72,17 @@ class UserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
       UISetups()
       userStatusUISetups(userStatus: authStatus)
-      scrollViewTapGuestureRecognizer.addTarget(self, action: #selector(endEditing))
+      scrollViewTapGuestureRecognizer.addTarget(self, action: #selector(endEditing(_:)))
       scrollView.showsVerticalScrollIndicator = false
+      userEmailTextField.delegate = self
+      userNameTextField.delegate = self
+      userMobileNumberTextField.delegate = self
+      userPasswordTextField.delegate = self
     }
 
-    @objc func endEditing() {
+    @objc func endEditing(_ sender: Any) {
       view.endEditing(true)
     }
 
@@ -92,7 +91,6 @@ class UserViewController: UIViewController {
 
         startNotification()
         userEmailTextField.becomeFirstResponder()
-        UIApplication.navigationController().navigationBar.tintColor = UIColor.goThemeColor
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -100,6 +98,7 @@ class UserViewController: UIViewController {
         userEmailTextField.resignFirstResponder()
         enterOTPView?.OTPEnterTextField.resignFirstResponder()
     }
+
 
   func startNotification() {
     NotificationCenter.default.addObserver(self, selector: #selector(UserViewController.keyboardWillBeHidden(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -135,7 +134,6 @@ class UserViewController: UIViewController {
     }
 
       UIView.animate(withDuration: 0.3, animations: {
-
         enterOTPView.frame = CGRect(x: 0, y: self.view.frame.height - enterOTPView.frame.height - kbSize.height, width: self.view.frame.width, height: 200.0)
       })
   }
@@ -155,10 +153,14 @@ class UserViewController: UIViewController {
   }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+      super.viewWillAppear(true)
 
-        WheelstreetViews.statusBarToDefault()
-        UIApplication.navigationController().navigationBar.tintColor = UIColor.goThemeColor
+      self.navigationController?.isNavigationBarHidden = false
+      self.navigationController?.navigationBar.barTintColor = UIColor.white
+      self.navigationController?.navigationBar.backgroundColor = UIColor.white
+      self.navigationController?.navigationBar.tintColor = UIColor.appThemeColor
+      self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+      self.navigationController?.navigationBar.shadowImage = UIImage()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -170,11 +172,12 @@ class UserViewController: UIViewController {
 
     
     @IBAction func userActionButtonTapped(_ sender: Any) {
-        
+
+        view.endEditing(true)
         guard let userEmail = userEmailTextField.text, let userName =  userNameTextField.text, let userMobileNumber = userMobileNumberTextField.text, let userPassword = userPasswordTextField.text else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
-        
         
         if !userEmail.isValidEmail() {
             WheelstreetViews.bluredAlertView(title: "Alert", message: "Please enter valid email address")
@@ -194,6 +197,7 @@ class UserViewController: UIViewController {
     func addMiddleLayer() {
         middleLayer = UIView()
         guard let middleLayer = middleLayer else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         middleLayer.layer.backgroundColor = UIColor.black.withAlphaComponent(0.6).cgColor
@@ -241,6 +245,7 @@ class UserViewController: UIViewController {
     func presentEnterOTPView() {
         self.view.endEditing(true)
         guard let enterOTPView = enterOTPView else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         addMiddleLayer()
@@ -276,6 +281,7 @@ class UserViewController: UIViewController {
         userEmail = userEmailTextField.text
         
         guard let userEmail = userEmail else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         
@@ -291,6 +297,9 @@ class UserViewController: UIViewController {
                     }
                     self.emailAuthAPIHandler(serverStatusCode: statusCode, serverResponseCode: serverResponseCode)
                 }
+                else {
+                  self.view.showToast(message: "Error. Please try again")
+              }
             })
         } else {
             self.view.makeToast(message: "Please enter valid email to proceed")
@@ -299,7 +308,7 @@ class UserViewController: UIViewController {
     
     func emailAuthAPIHandler(serverStatusCode: Int, serverResponseCode: Int) {
         if serverStatusCode == 200 && serverResponseCode == 3 {
-            self.view.makeToast(message: "Email is already registred. Please signin to proceed.")
+            self.view.showToast(message: "Email is already registred. Please signin to proceed.")
             authStatus = .signin
             userStatusUISetups(userStatus: authStatus)
         } else if serverStatusCode == 422, serverResponseCode == -4 {
@@ -320,7 +329,7 @@ class UserViewController: UIViewController {
 
     WheelstreetAPI.userSignup(params: signupParameteres, completion: { parsedJSON, statusCode, error, code in
       if error != nil {
-        self.view.makeToast(message: "Error. Please try again")
+        self.view.showToast(message: "Error. Please try again")
       } else {
         if let data = parsedJSON, let serverResponseCode = data["status"].int {
           guard let statusCode = statusCode else {
@@ -395,7 +404,6 @@ class UserViewController: UIViewController {
     
     func signinAuthAPIHandler(serverStatusCode: Int, serverResponseCode: Int, resposeError: String?, goUser: GoUser?) {
         if serverStatusCode == 200 && serverResponseCode == 1 {
-            UserDefaults.standard.set(true, forKey: GoKeys.isUserLoggedIn)
             guard let goUser = goUser else {
                 return
             }
@@ -410,6 +418,7 @@ class UserViewController: UIViewController {
     func signupAuthAPIHandler(serverStatusCode: Int, serverResponseCode: Int, resposeError: String?, goUser: GoUser?) {
       if serverStatusCode == 200 && (serverResponseCode == 1 || serverResponseCode == 2) {
             guard let goUser = goUser else {
+              WheelstreetViews.somethingWentWrongAlertView()
                 return
             }
             GoUserDefaultsService.setUserData(for: goUser)
@@ -423,7 +432,6 @@ class UserViewController: UIViewController {
     func preSignupAuthAPIHandler(serverStatusCode: Int, serverResponseCode: Int, resposeError: String?) {
         if serverStatusCode == 200 && serverResponseCode == 2 {
             // Succes: send user to map screen
-            UserDefaults.standard.set(true, forKey: GoKeys.isUserLoggedIn)
             gotoGoHome()
         } else if serverStatusCode == 422 && serverResponseCode == -3 {
             // Invalid OTP
@@ -437,7 +445,6 @@ class UserViewController: UIViewController {
     
     func gotoGoHome() {
       UserDefaults.standard.set(true, forKey: GoKeys.isUserLoggedIn)
-      UserDefaults.standard.synchronize()
       let appDelegate = UIApplication.shared.delegate as! AppDelegate
       appDelegate.checkLoginAndSetRoot()
       self.updateUserProfileInformation()
@@ -450,7 +457,7 @@ class UserViewController: UIViewController {
         middleLayer?.removeFromSuperview()
         enterOTPView?.removeFromSuperview()
     }
-    
+
     fileprivate func runTimer() {
         seconds = 0
         
@@ -595,6 +602,8 @@ extension UserViewController: UITextFieldDelegate {
         if textField.accessibilityIdentifier == "email" {
             userAunthentications()
         }
+
+      self.view.endEditing(true)
       activeField = nil
     }
     
@@ -603,6 +612,7 @@ extension UserViewController: UITextFieldDelegate {
 extension UserViewController: EnterOTPDelegate {
     func didTapResendOTPButton() {
         guard let userEmail = userEmailTextField.text, let userName =  userNameTextField.text, let userMobileNumber = userMobileNumberTextField.text, let userPassword = userPasswordTextField.text else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         let preSignupParamas: Parameters = ["source": 3, "name": userName, "email": userEmail, "mobile": userMobileNumber, "password": userPassword, "otpResend": true]
@@ -617,17 +627,21 @@ extension UserViewController: EnterOTPDelegate {
 
     func didTextFieldValueChange(value: String) {
         guard let mobileNumber = userMobileNumberTextField.text else {
+           view.endEditing(true)
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         if value.count > 3 {
+          view.endEditing(true)
           self.userEnteredOTP = value
           let params: Parameters = ["source": 3, "mobile": mobileNumber, "otp": value]
             WheelstreetAPI.verifyEnteredOTP(params: params, completion: { parsedJSON, statusCode, error, code in
                 if error != nil {
-                    self.view.makeToast(message: "Error. Please try again")
+                    self.view.showToast(message: "Error. Please try again")
                 } else {
                     if let data = parsedJSON, let serverResponseCode = data["status"].int {
                         guard let statusCode = statusCode else {
+                          self.view.showToast(message: "Error. Please try again")
                             return
                         }
                         let responseError = data["error"].string

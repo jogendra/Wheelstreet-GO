@@ -38,6 +38,7 @@ class SendOTPView: UIView {
     @objc func signinOtherAccountTapped(_ sender: Any) {
         
         guard let mobileNumber = enterOTPMobileNumberTextField.text else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         sendOTPDelegate?.getEnteredMobileNumber(mobileNumber)
@@ -45,6 +46,7 @@ class SendOTPView: UIView {
     
     @objc func sendOTPTapped(_ sender: Any) {
         guard let mobileNumber = enterOTPMobileNumberTextField.text else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         sendOTPDelegate?.getEnteredMobileNumber(mobileNumber)

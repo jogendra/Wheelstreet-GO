@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Mixpanel
 
 fileprivate enum Defaults {
   static let cornerRadius: CGFloat = 4.0
@@ -22,18 +23,21 @@ class ExtraChargesViewController: UIViewController {
   @IBOutlet var cancelButton: UIButton!
   @IBOutlet var payButton: UIButton!
 
+  @IBOutlet var heightConstraint: NSLayoutConstraint!
   fileprivate var extaCharge: Int!
   fileprivate var safeLocations: [GOSafeLocation]!
   fileprivate var booking: GOBooking!
+  var reading: GoReading!
 
   fileprivate var tableViewHandler: NearLocationsTableViewDelegateDataSource?
 
-  init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?, extraCharge: Int, safeLocations: [GOSafeLocation], booking: GOBooking) {
+  init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?, extraCharge: Int, safeLocations: [GOSafeLocation], booking: GOBooking, reading: GoReading) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
     self.extaCharge = extraCharge
     self.safeLocations = safeLocations
     self.booking = booking
+    self.reading = reading
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -44,6 +48,8 @@ class ExtraChargesViewController: UIViewController {
     super.viewDidLoad()
 
     setUpViews()
+
+    Mixpanel.mainInstance().time(event: GoMixPanelEvents.goExtrachargesProceed)
   }
 
   fileprivate func setUpViews() {
@@ -61,12 +67,13 @@ class ExtraChargesViewController: UIViewController {
 
   fileprivate func setPayButtonTitle() {
     var title = Defaults.payString
-    title += "\(extaCharge)" + Defaults.extraString
+    title += " ₹\(extaCharge!) " + Defaults.extraString
     payButton.setTitle(title, for: .normal)
   }
 
   fileprivate func loadTableView() {
     tableViewHandler = NearLocationsTableViewDelegateDataSource.init(locations: self.safeLocations)
+    heightConstraint.constant = CGFloat(80*(self.safeLocations.count) + 50)
     tableViewHandler?.delegate = self
     tableViewHandler?.setUpForTableView(nearestLocationsTableView)
     nearestLocationsTableView.reloadData()
@@ -74,22 +81,17 @@ class ExtraChargesViewController: UIViewController {
 
 
   @IBAction func didTapCancelButton(_ sender: Any) {
+    Mixpanel.mainInstance().track(event: GoMixPanelEvents.goExtrachargesSkip)
+
     self.dismiss(animated: true, completion: nil)
   }
 
   @IBAction func didTapPayButton(_ sender: Any) {
-    WheelstreetAPI.dropBike(forBookingID: self.booking.bookingId, forceDrop: true, showEndKm: true, completion: { (reading, extraCharge, safeLocations, trip, status) in
-      guard status == .SUCCESS else {
-        WheelstreetViews.makeToast(message: WheelstreetAPI.statusToMessage(status))
-        return
-      }
+    Mixpanel.mainInstance().track(event: GoMixPanelEvents.goExtrachargesProceed)
 
-      if let trip = trip {
-        let endTripViewController = EndTripViewController(nibName: "EndTripViewController", bundle: nil, trip: trip)
-        self.present(endTripViewController, animated: true, completion: {
-          return
-        })
-      }
+    self.dismiss(animated: true, completion: {
+      let enterKMVC = EnterKMViewController(nibName: "EnterKMViewController", bundle: nil, type: .end, bookingID: "\(self.booking.bookingId)", scannedBike: self.booking.bike, reading: self.reading, forceDrop: true)
+      UIApplication.navigationController().pushViewController(enterKMVC, animated: true)
     })
   }
 }

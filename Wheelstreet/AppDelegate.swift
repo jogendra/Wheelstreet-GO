@@ -10,6 +10,10 @@ import UIKit
 import CoreData
 import GoogleMaps
 import GooglePlaces
+import Mixpanel
+import Fabric
+import Crashlytics
+import FacebookCore
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,21 +23,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var navigationController: UINavigationController?
     
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+
+
     // Override point for customization after application launch.
     GMSServices.provideAPIKey(GoDefaults.goGoogleMapsApiKey)
     GMSPlacesClient.provideAPIKey(GoDefaults.goGooglePlacesApiKey)
+
+    //Set User CoreLocation
+    Location.shared.locationManagerSetup()
+
+    //Crashlytics Initialisation
+    Fabric.with([Crashlytics.self])
+
+    // Facebook
+    SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+
+    //MixPanel Initialisation
+    Mixpanel.initialize(token: "af43e52d6acabf72f038ac72a7675acd")
+
 
     self.statusBar = UIApplication.shared.value(forKey: "statusBar") as? UIView
     UIApplication.shared.statusBarStyle = .lightContent
     self.statusBar?.backgroundColor = UIColor.clear
 
+    WheelstreetAPI.getHelpLineNumber()
     checkLoginAndSetRoot()
+
     return true
   }
 
   func setMapAsRoot(userStatus: UserStatus? = .notLoggedIn, bikes: [GoBike]? = nil) {
-    let homeScreen = HomeViewController(nibName: "HomeViewController", bundle: nil, bikes: bikes)
-    let statusView = StatusViewController(nibName: "StatusViewController", bundle: nil, userStatus: userStatus ?? .notLoggedIn, rootVC: homeScreen)
+    let homeScreen = HomeViewController(nibName: "HomeViewController", bundle: nil, bikes: bikes, userStatus: userStatus!)
+    let statusView = StatusViewController(nibName: "StatusViewController", bundle: nil, userStatus: userStatus!, rootVC: homeScreen)
     setAppWitRootAs(vc: statusView)
   }
 
@@ -89,11 +110,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
   }
 
-  
-
   func setAppWitRootAs(vc: UIViewController) {
+    navigationController = nil
     navigationController = UINavigationController(rootViewController: vc)
-    navigationController?.navigationBar.barTintColor = UIColor.white
+    navigationController?.navigationBar.barTintColor = UIColor.clear
     navigationController?.navigationBar.tintColor = UIColor.white
     navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
     navigationController?.isNavigationBarHidden = true
@@ -126,6 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func applicationDidBecomeActive(_ application: UIApplication) {
+    Mixpanel.mainInstance().track(event: GoMixPanelEvents.appOpen)
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
   }
 

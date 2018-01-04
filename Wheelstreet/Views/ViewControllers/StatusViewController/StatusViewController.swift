@@ -14,9 +14,13 @@ protocol StatusViewControllerDelegate: class {
 
 class StatusViewController: UIViewController {
 
+  @IBOutlet var statusView: UIView!
+  @IBOutlet var rootVCView: UIView!
+  @IBOutlet var statusViewHeightConstraint: NSLayoutConstraint!
+  
   var rootVC: UIViewController!
-  var statusLabelHeight: CGFloat = 0
-  lazy var notificationView = UIView()
+//  var statusLabelHeight: CGFloat = 0
+//  lazy var notificationView = UIView()
   lazy var textLabel = UILabel()
   weak var delegate: StatusViewControllerDelegate?
 
@@ -46,17 +50,49 @@ class StatusViewController: UIViewController {
     setUpInputViews()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    view.endEditing(true)
+
+    WheelstreetViews.statusBarTo(color: .clear, style: isVisible ? .lightContent : .default)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    WheelstreetViews.statusBarToDefault()
+    self.navigationController?.isNavigationBarHidden = true
+    self.navigationController?.navigationBar.barTintColor = UIColor.white
+    self.navigationController?.navigationBar.backgroundColor = UIColor.white
+    self.navigationController?.navigationBar.tintColor = UIColor.goThemeColor
+    self.navigationController?.navigationBar.titleTextAttributes = [
+      NSAttributedStringKey.foregroundColor: UIColor.goThemeColor,
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
+    ]
+    self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    self.navigationController?.navigationBar.shadowImage = UIImage()
+    self.navigationController?.navigationBar.barStyle = .default
+  }
+
   func setUpInputViews() {
+    rootVCView.addSubview(rootVC.view)
+    rootVC.view.translatesAutoresizingMaskIntoConstraints = false
+    rootVC.view.topAnchor.constraint(equalTo: rootVCView.topAnchor).isActive = true
+    rootVC.view.leadingAnchor.constraint(equalTo: rootVCView.leadingAnchor).isActive = true
+    rootVC.view.bottomAnchor.constraint(equalTo: rootVCView.bottomAnchor).isActive = true
+    rootVC.view.trailingAnchor.constraint(equalTo: rootVCView.trailingAnchor).isActive = true
+
     setNotificationViewFrame()
 
-    notificationView.backgroundColor = UIColor.iosRed
-    view.addSubview(notificationView)
+//    notificationView.backgroundColor = UIColor.iosRed
+//    view.addSubview(notificationView)
 
     addLabelWithAnimation()
     addTapGuestureToNotificationView()
 
-    setRootVCFrame()
-    view.addSubview(rootVC.view)
+//    setRootVCFrame()
+//    view.addSubview(rootVC.view)
 
     configureUserStatus()
   }
@@ -85,22 +121,28 @@ class StatusViewController: UIViewController {
 
   func addTapGuestureToNotificationView() {
     let tapGuesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapNotificationView))
-    notificationView.addGestureRecognizer(tapGuesture)
+    statusView.addGestureRecognizer(tapGuesture)
   }
 
   func addLabelWithAnimation() {
-    textLabel = UILabel(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height , width: UIApplication.shared.statusBarFrame.width, height: 32))
+    textLabel = UILabel(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height , width: UIApplication.shared.statusBarFrame.width, height: 28))
+    statusView.addSubview(textLabel)
+    textLabel.translatesAutoresizingMaskIntoConstraints = false
+    textLabel.topAnchor.constraint(equalTo: statusView.topAnchor, constant: 38).isActive = true
+    textLabel.leadingAnchor.constraint(equalTo: statusView.leadingAnchor).isActive = true
+    textLabel.bottomAnchor.constraint(equalTo: statusView.bottomAnchor).isActive = true
+    textLabel.trailingAnchor.constraint(equalTo: statusView.trailingAnchor).isActive = true
     textLabel.text = ""
     textLabel.textColor = UIColor.white
     textLabel.textAlignment = .center
     textLabel.backgroundColor = UIColor.clear
-    textLabel.font = UIFont.systemFont(ofSize: 15)
-    notificationView.addSubview(textLabel)
+    textLabel.font = UIFont.systemFont(ofSize: 12)
     addTextLabelAnimations()
   }
 
   func updateNotificationView(color: UIColor, text: String) {
-    notificationView.backgroundColor = color
+//    notificationView.backgroundColor = color
+    statusView.backgroundColor = color
     textLabel.text = text
   }
 
@@ -114,7 +156,7 @@ class StatusViewController: UIViewController {
 
   func updateTopBar() {
     setNotificationViewFrame()
-    setRootVCFrame()
+//    setRootVCFrame()
     setStatusBar()
   }
 
@@ -132,13 +174,16 @@ class StatusViewController: UIViewController {
     var notificationFrame = UIApplication.shared.statusBarFrame
     if isVisible {
       notificationFrame.size.height += 32
+      statusViewHeightConstraint.constant = 62
       addTextLabelAnimations()
     }
     else {
       notificationFrame.size.height -= 32
+      statusViewHeightConstraint.constant = 0
+      statusView.backgroundColor = UIColor.clear
       removeTextLabelAnimations()
     }
-    notificationView.frame = notificationFrame
+//    notificationView.frame = notificationFrame
   }
 
   func setRootVCFrame() {

@@ -7,10 +7,18 @@
 //
 
 import UIKit
+import Mixpanel
 
 protocol UserProfileDelegate: class {
     func didTapMapButton()
     func didTapSignOut()
+}
+
+class StatusLabel: UILabel {
+  override func drawText(in rect: CGRect) {
+    let insets = UIEdgeInsets.init(top: 8, left: 8, bottom: 8, right: 8)
+    super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
+  }
 }
 
 class UserProfileView: UIView {
@@ -31,7 +39,7 @@ class UserProfileView: UIView {
     
     @IBOutlet weak var drivingLicenseButton: UIButton!
     
-    @IBOutlet weak var licenseStatusLabel: UILabel!
+    @IBOutlet weak var licenseStatusLabel: StatusLabel!
     
     @IBOutlet weak var signOutButton: UIButton!
     
@@ -74,17 +82,18 @@ class UserProfileView: UIView {
     func setDefaultsDataToProfile() {
         let userDefaults = UserDefaults.standard
         
-        guard let name = userDefaults.value(forKey: GoKeys.name), let mobile = userDefaults.value(forKey: GoKeys.mobileNumber), let status = userDefaults.value(forKey: GoKeys.kycStatus) as? String, let trips = userDefaults.value(forKey: GoKeys.bookingCount), let distance = userDefaults.value(forKey: GoKeys.distanceKey) else {
+        guard let name = userDefaults.value(forKey: GoKeys.name) as? String, let mobile = userDefaults.value(forKey: GoKeys.mobileNumber), let status = userDefaults.value(forKey: GoKeys.kycStatus) as? String, let trips = userDefaults.value(forKey: GoKeys.bookingCount), let distance = userDefaults.value(forKey: GoKeys.distanceKey) else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
-        self.userNameLabel.text = String(describing: name)
+        self.userNameLabel.text = name.capitalized
         self.userMobileNumberLabel.text = String(describing: mobile)
         self.licenseStatusLabel.text = status
         self.numberOfTripsLabel.text = String(describing: trips)
         self.distanceCoveredLabel.text = "\(distance) KM"
         
         switch status {
-        case "Rejacted":
+        case "Rejected":
             self.licenseStatusLabel.layer.backgroundColor = UIColor.red.cgColor
         case "Verified":
             self.licenseStatusLabel.layer.backgroundColor = UIColor.green.cgColor
@@ -111,10 +120,11 @@ class UserProfileView: UIView {
     }
     
     @IBAction func didTapSignOut(_ sender: Any) {
-        GoUserDefaultsService.clearUserDefaults()
-        userProfileDelegate?.didTapSignOut()
-        UserDefaults.standard.set(false, forKey: GoKeys.isUserLoggedIn)
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+          GoUserDefaultsService.clearUserDefaults()
+          userProfileDelegate?.didTapSignOut()
+          Mixpanel.mainInstance().track(event: GoMixPanelEvents.signOut)
+          UserDefaults.standard.set(false, forKey: GoKeys.isUserLoggedIn)
             appDelegate.setMapAsRoot()
         }
     }

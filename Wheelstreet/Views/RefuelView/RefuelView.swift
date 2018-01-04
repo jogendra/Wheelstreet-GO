@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Mixpanel
 
 protocol RefuelViewDelegate: class {
   func didTapDismiss()
@@ -30,6 +31,7 @@ class RefuelView: UIView {
   }
 
   @IBAction func didTapDismiss(_ sender: Any) {
+    Mixpanel.mainInstance().track(event: GoMixPanelEvents.goRefueledBike)
     delegate?.didTapDismiss()
   }
 }

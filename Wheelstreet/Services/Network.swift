@@ -2,6 +2,7 @@ import UIKit
 import Foundation
 import Alamofire
 import AlamofireImage
+import CoreLocation
 
 fileprivate struct Defaults {
   static let timeoutInternval: TimeInterval = 20
@@ -22,7 +23,7 @@ class Network {
 
     WheelstreetViews.networkActivityIndicator(visible: true)
 
-    var finalParams: Dictionary<String, Any> = defaultParamas()
+    var finalParams: Dictionary<String, Any> = Network.defaultParamas()
     if let params = params {
       finalParams.unionInPlace(dictionary: params)
     }
@@ -47,16 +48,16 @@ class Network {
 
   // MARK: POST
     
-  func post(_ url: String, params: Dictionary<String, Any>?, encoding: ParameterEncoding? = JSONEncoding.default, withHeader: Bool, completion: @escaping (_ parsedJSON: JSON?, _ statusCode: Int?, Error?) -> Void) {
+  func post(_ url: String, params: Dictionary<String, Any>?, encoding: ParameterEncoding? = JSONEncoding.default, withHeader: Bool, showActivityIndicator: Bool? = true, completion: @escaping (_ parsedJSON: JSON?, _ statusCode: Int?, Error?) -> Void) {
 
     let headers: HTTPHeaders = getAuthorizationHeader()
 
-    WheelstreetViews.networkActivityIndicator(visible: true)
+    WheelstreetViews.networkActivityIndicator(visible: true, showActivityIndicator: showActivityIndicator)
 
     Alamofire.SessionManager.default.session.configuration.timeoutIntervalForRequest = Defaults.timeoutInternval
     Alamofire.SessionManager.default.session.configuration.timeoutIntervalForResource = Defaults.timeoutInternval
 
-    var finalParams: Dictionary<String, Any> = defaultParamas()
+    var finalParams: Dictionary<String, Any> = Network.defaultParamas()
     if let params = params {
       finalParams.unionInPlace(dictionary: params)
     }
@@ -70,12 +71,12 @@ class Network {
         case .success:
           if let value = response.result.value, let satusCode = response.response?.statusCode {
             let parsedJson = JSON(value)
-            print("postRequest SUCCESS URL : \(url) \n STATUS : \(String(describing: (response.response?.statusCode))) VALUE: \(parsedJson)")
+            print("postRequest SUCCESS URL : \(url) \n STATUS : \(String(describing: (response.response?.statusCode))) VALUE: \(parsedJson) \n PARAMS: \(finalParams)")
             completion(parsedJson, satusCode, nil)
           }
         case .failure(let error):
           completion(nil, response.response?.statusCode, error)
-          print("postRequest FALIURE URL : \(url) \n STATUS : \(String(describing: (response.response?.statusCode))) ERROR: \(error)")
+          print("postRequest FALIURE URL : \(url) \n STATUS : \(String(describing: (response.response?.statusCode))) ERROR: \(error) \n PARAMS: \(finalParams)")
         }
 
       }
@@ -121,6 +122,7 @@ class Network {
                             if let satusCode = response.response?.statusCode {
                               let parsedJson = JSON(value)
                               completion(parsedJson, satusCode, nil)
+                              print("postRequest SUCCESS URL : \(url) \n STATUS : \(String(describing: (response.response?.statusCode))) VALUE: \(parsedJson) \n PARAMS: \(params)")
                             }
                           case .failure(let error):
                             completion(nil, response.response?.statusCode, error)
@@ -143,7 +145,7 @@ class Network {
 
     WheelstreetViews.networkActivityIndicator(visible: true)
 
-    var finalParams: Dictionary<String, Any> = defaultParamas()
+    var finalParams: Dictionary<String, Any> = Network.defaultParamas()
     if let params = params {
       finalParams.unionInPlace(dictionary: params)
     }
@@ -176,7 +178,7 @@ class Network {
 
     WheelstreetViews.networkActivityIndicator(visible: true)
 
-    var finalParams: Dictionary<String, Any> = defaultParamas()
+    var finalParams: Dictionary<String, Any> = Network.defaultParamas()
     if let params = params {
       finalParams.unionInPlace(dictionary: params)
     }
@@ -210,7 +212,7 @@ class Network {
 
     WheelstreetViews.networkActivityIndicator(visible: true)
 
-    var finalParams: Dictionary<String, Any> = defaultParamas()
+    var finalParams: Dictionary<String, Any> = Network.defaultParamas()
     if let params = params {
       finalParams.unionInPlace(dictionary: params)
     }
@@ -254,7 +256,7 @@ class Network {
     Alamofire.upload(multipartFormData: {
       multipartFormData in
       multipartFormData.append(imageData, withName: imageName, fileName: "attachment_ios_\(Date().timeIntervalSince1970).jpg", mimeType: "image/jpg")
-      var finalParams: Dictionary<String, Any> = self.defaultParamas()
+      var finalParams: Dictionary<String, Any> = Network.defaultParamas()
       if let params = params {
         finalParams.unionInPlace(dictionary: params)
       }
@@ -382,7 +384,7 @@ class Network {
       for (name, imageData) in imageData {
         multipartFormData.append(imageData, withName: name, fileName: "\(name).png", mimeType: "image/png")
       }
-      var finalParams: Dictionary<String, Any> = self.defaultParamas()
+      var finalParams: Dictionary<String, Any> = Network.defaultParamas()
       if let params = params {
         finalParams.unionInPlace(dictionary: params)
       }
@@ -466,10 +468,17 @@ class Network {
     return header
   }
 
-  func defaultParamas() -> Dictionary<String,Any> {
+  static func defaultParamas() -> Dictionary<String,Any> {
     var sourceParam: Dictionary<String,Any> = ["source": 3]
-    sourceParam["lat"] = 12.8951532 // Location.shared.userCurrentLocation()?.coordinate.latitude
-    sourceParam["lng"] = 77.6074797 // Location.shared.userCurrentLocation()?.coordinate.longitude
+    Location.shared.locationManagerSetup()
+
+    sourceParam["lat"] = UserDefaults.standard.value(forKey: GoKeys.currentLat)
+    sourceParam["lng"] = UserDefaults.standard.value(forKey: GoKeys.currentLng)
+
+////  Hardcoded for fake location outside parking area
+//    sourceParam["lat"] = 13.19864
+//    sourceParam["lng"] = 77.7044041
+
     return sourceParam
   }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import Mixpanel
 
 protocol BikeFareViewDelegate: class {
     func didTapFareDetail(bike: GoBike)
@@ -58,11 +59,24 @@ class BikeFareView: UIView {
     }
     
     @IBAction func didTapFareDetail(_ sender: Any) {
+      if let bike = bike {
+        Mixpanel.mainInstance().track(event: GoMixPanelEvents.goFareDetailsInfo, properties: ["Bike Reg No": bike.regNo])
+      }
+      else {
+        Mixpanel.mainInstance().track(event: GoMixPanelEvents.goFareDetailsInfo)
+      }
+
       bikeFareViewDelegate?.didTapFareDetail(bike: self.bike!)
     }
     
     @IBAction func didTapProceed(_ sender: Any) {
-        bikeFareViewDelegate?.didTapProceed()
+      if let bike = bike {
+        Mixpanel.mainInstance().track(event: GoMixPanelEvents.goProceedQRScan, properties: ["Bike Reg No": bike.regNo])
+      }
+      else {
+        Mixpanel.mainInstance().track(event: GoMixPanelEvents.goProceedQRScan)
+      }
+      bikeFareViewDelegate?.didTapProceed()
     }
     
     @IBAction func didTapScanQR(_ sender: Any) {

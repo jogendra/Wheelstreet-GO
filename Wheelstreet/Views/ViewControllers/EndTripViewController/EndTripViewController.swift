@@ -9,6 +9,8 @@
 
 import UIKit
 import GoogleMaps
+import FacebookShare
+import Mixpanel
 
 fileprivate enum Defaults {
   static let cornerRadius: CGFloat = 4.0
@@ -82,7 +84,10 @@ class EndTripViewController: UIViewController {
 
     setupInitialViews()
     setupPaytmMerchant()
-    configureTrip()
+    configureWithTrip()
+
+    self.navigationItem.setRightBarButton(UIBarButtonItem(title: "Help", style: .plain, target: self, action: #selector(help)), animated: true)
+    Mixpanel.mainInstance().time(event: GoMixPanelEvents.goPayment)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -90,23 +95,27 @@ class EndTripViewController: UIViewController {
 
     view.endEditing(true)
     configurePaymentSatusView()
-    UIApplication.makeNavigationBarTransparent(statusBarStyle: .default)
+
+    self.navigationController?.isNavigationBarHidden = false
+    self.navigationController?.navigationBar.barTintColor = UIColor.white
+    self.navigationController?.navigationBar.backgroundColor = UIColor.white
+    self.navigationController?.navigationBar.titleTextAttributes = [
+      NSAttributedStringKey.foregroundColor: UIColor.black,
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .bold)
+    ]
+    self.navigationController?.navigationBar.barStyle = .default
+    self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    self.navigationController?.navigationBar.shadowImage = UIImage()
+
+    if #available(iOS 11.0, *) {
+      self.navigationController?.navigationBar.prefersLargeTitles = true
+    } else {
+      // Fallback on earlier versions
+    }
+    self.title = "Trip Details"
   }
 
-
-  override func viewWillAppear(_ animated: Bool) {
-     super.viewWillAppear(animated)
-
-    UIApplication.makeNavigationBarTransparent(statusBarStyle: .default)
-  }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-
-    view.endEditing(true)
-  }
-
-  func configureTrip() {
+  func configureWithTrip() {
     bikeNameLabel.text = trip.bike.bikeModelName
     bikeNumberLabel.text = trip.bike.regNo
     priceLabel.text = "₹" + trip.totalAmount!
@@ -114,14 +123,19 @@ class EndTripViewController: UIViewController {
     distanceLabel.text =  String(describing: distance) + " km"
 
     let interval = trip.endDateTime! - trip.startDateTime!
-    durationLabel.text =  WheelstreetCommon.prettyStringFromTimeInterval(interval: TimeInterval(interval), date: trip.startDate!)
+    durationLabel.text =  WheelstreetCommon.prettyStringFromTimeInterval(interval: interval)
 
     transactionStatusLabel.text = ""
-    if trip.paymentDetails?.isEmpty == true || trip.paymentDetails == nil {
-      paymentStatus = .standard
-    }
-    else {
+
+    switch trip.paymentStatus {
+    case .faliure:
+      payButton.isEnabled = true
       paymentStatus = .failure
+    case .success:
+      paymentStatus = .success
+    case .initiate:
+      paymentStatus = .standard
+      payButton.isEnabled = true
     }
 
     configurePaymentSatusView()
@@ -130,24 +144,24 @@ class EndTripViewController: UIViewController {
   //MARK: Payments
   func setupPaytmMerchant() {
     merchantConfig = PGMerchantConfiguration.default()
-    merchantConfig.checksumGenerationURL = "https://www.wheelstreet.org/payment/generate-checksum"
-    merchantConfig.checksumValidationURL = "https://www.wheelstreet.org/payment/verify-checksum"
-
-    merchantConfig.merchantID = "Bashar31727478105952"
+    merchantConfig.checksumGenerationURL = "https://www.wheelstreet.com/payment/generate-checksum"
+    merchantConfig.checksumValidationURL = "https://www.wheelstreet.com/payment/verify-checksum"
+    merchantConfig.merchantID = "Bashar14780895321034"
     merchantConfig.website = "Basharweb"
-    merchantConfig.industryID = "Retail"
+    merchantConfig.industryID = "Retail110"
     merchantConfig.channelID = "WEB"
   }
 
   func presentPayment() {
     odrDict["ORDER_ID"] = "\(self.trip.orderId)"
-    odrDict["MID"] = "Bashar31727478105952"
+    odrDict["MID"] = "Bashar14780895321034"
     odrDict["CUST_ID"] = "\(UserDefaults.standard.value(forKey: GoKeys.userId) as! Int)"
     odrDict["CHANNEL_ID"] = "WEB"
-    odrDict["INDUSTRY_TYPE_ID"] = "Retail"
+    odrDict["INDUSTRY_TYPE_ID"] = "Retail110"
     odrDict["WEBSITE"] = "Basharweb"
     odrDict["TXN_AMOUNT"] = self.trip.totalAmount!
     odrDict["THEME"] = "merchant"
+    odrDict["REQUEST_TYPE"] = "DEFAULT"
     odrDict["EMAIL"] = "\(Utils().checkNSUserDefault(GoKeys.email))"
     odrDict["MOBILE_NO"] = "\(Utils().checkNSUserDefault(GoKeys.mobileNumber))"
     odrDict["CALLBACK_URL"] = "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=\(self.trip.orderId)"
@@ -158,18 +172,29 @@ class EndTripViewController: UIViewController {
           self.odrDict["CHECKSUMHASH"] = hash
           let order: PGOrder = PGOrder(params: self.odrDict)
           self.transactionController = PGTransactionViewController(transactionFor: order)
-          self.transactionController.serverType = eServerTypeStaging
+          self.transactionController.serverType = eServerTypeProduction
           self.transactionController.merchant = self.merchantConfig
           self.transactionController.loggingEnabled = true
           self.transactionController.delegate = self
-          
-          UIApplication.topViewController()?.present((self.transactionController)!, animated: true, completion: nil)
+
+          let navVC = UINavigationController(rootViewController: (self.transactionController)!)
+          self.transactionController!.navigationItem.setLeftBarButton(UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.attemptToDismissPayment)), animated: true)
+          navVC.navigationBar.tintColor = UIColor.appThemeColor
+          UIApplication.topViewController()?.present(navVC, animated: true, completion: nil)
         }
       }
       else {
         WheelstreetViews.somethingWentWrongAlertView()
       }
     }
+  }
+
+  @objc func attemptToDismissPayment() {
+    WheelstreetViews.basicAlertView(title: "Alert", message: "Are you sure you want to cancel Transaction", handler: { (alert) in
+      self.transactionController!.navigationController!.dismiss(animated: true, completion: {
+        self.verifyPayment()
+      })
+    }, cancelHandler: nil)
   }
 
   func setupInitialViews() {
@@ -201,7 +226,7 @@ class EndTripViewController: UIViewController {
     fareDetailsTableView.showsVerticalScrollIndicator = false
     fareDetailsTableView.register(FareDetailsTableViewCell.self)
     if let rent = self.trip.rent {
-      tableViewHeightConstraint.constant = CGFloat(rent.count*40 + 60)
+      tableViewHeightConstraint.constant = CGFloat((rent.count + 1)*40 + 60)
     }
     else {
       tableViewHeightConstraint.constant = 0
@@ -209,11 +234,11 @@ class EndTripViewController: UIViewController {
     paymentStatusView(isHidden: true)
     payView(isHidden: true)
 
-    scrollViewTapGuestureRecognizer.addTarget(self, action: #selector(endEditing))
+    scrollViewTapGuestureRecognizer.addTarget(self, action: #selector(endEditing(_:)))
     scrollView.showsVerticalScrollIndicator = false
   }
 
-  @objc func endEditing() {
+  @objc func endEditing(_ sender: Any) {
     view.endEditing(true)
   }
 
@@ -234,6 +259,15 @@ class EndTripViewController: UIViewController {
       payView(isHidden: false)
     }
     configureTransactionLabel(paymentStatus: self.paymentStatus)
+
+    if let tripDiscount = trip.withoutDiscount?.toInt(), trip.totalAmount?.toInt() == 0, tripDiscount > 0 {
+      payButton.setTitle("Your ride is on us, Book Another Ride", for: .normal)
+      shareButton.setTitle("Share with friends to get their first ride free!", for: .normal)
+    }
+    else {
+      payButton.setTitle(paymentStatus == .failure ? Defaults.payString + " " + Defaults.againString : Defaults.payString, for: .normal)
+      shareButton.setTitle("Share your ride to get 50% off", for: .normal)
+    }
   }
 
   func paymentStatusView(isHidden: Bool, goToMaps: Bool = true) {
@@ -300,32 +334,74 @@ class EndTripViewController: UIViewController {
     WheelstreetAPI.verifyPayment(orderId: "\(self.trip.orderId)") { (trip, status) in
       self.transactionController!.dismiss(animated: true, completion: {
         if let trip = trip {
+          Mixpanel.mainInstance().track(event: GoMixPanelEvents.goPayment, properties: ["Amount": trip.totalAmount ?? "", "Payment ID": trip.orderId])
           self.trip = trip
+          self.configureWithTrip()
+          if let amount = self.trip.totalAmount!.toDouble() {
+            Mixpanel.mainInstance().people.trackCharge(amount: amount)
+          }
         }
         else {
+          Mixpanel.mainInstance().track(event: GoMixPanelEvents.goRetryPayment, properties: ["Amount": self.trip.totalAmount ?? "", "Order ID": self.trip.orderId])
           self.paymentStatus = .failure
+          self.configurePaymentSatusView()
         }
-
-        self.configureTrip()
       })
     }
   }
 
-
   @IBAction func didTapShareButton(_ sender: Any) {
-    WheelstreetAPI.sharedOnFacebook(bookingId: "\(self.trip.bookingId)", postId: "\(Date().timeIntervalSince1970)") { (trip, errorMessage, status) in
+    Mixpanel.mainInstance().time(event: GoMixPanelEvents.goPaymentFBShare)
+    let url = URL(string: "https://www.wheelstreet.com/")!
+    let myContent = LinkShareContent(url: url)
+    do {
+    try ShareDialog<LinkShareContent>.show(from: self, content: myContent, completion: { (result) in
+      Mixpanel.mainInstance().track(event: GoMixPanelEvents.goPaymentFBShare, properties: ["Amount": self.trip.totalAmount ?? ""])
+
+      WheelstreetAPI.sharedOnFacebook(bookingId: "\(self.trip.bookingId)", postId: Int(Date().timeIntervalSince1970)) { (trip, errorMessage, status) in
       if status == .SUCCESS {
         self.trip = trip
-        self.configureTrip()
+        self.configureWithTrip()
+        self.shareButton.setTitle("50% Discount Applied", for: .normal)
+        self.shareButton.isEnabled = false
       }
       else {
         WheelstreetViews.alertView(title: errorMessage ?? "Something Went Wrong", message:" ")
+        self.shareButton.setTitle("Share your ride to get 50% off", for: .normal)
+        self.shareButton.isEnabled = true
       }
+      }
+    })
+    }
+    catch {
+      WheelstreetViews.somethingWentWrongAlertView()
     }
   }
 
   @IBAction func didTapPayButton(_ sender: Any) {
-    presentPayment()
+    if let tripDiscount = trip.withoutDiscount?.toInt(), trip.totalAmount?.toInt() == 0, tripDiscount > 0 {
+      if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+        appDelegate.checkLoginAndSetRoot()
+      }
+      else {
+        self.payButton.isEnabled = true
+
+        WheelstreetViews.somethingWentWrongAlertView()
+      }
+    }
+    else {
+    WheelstreetAPI.getBookingDetails(forBookingID: self.trip.bookingId, completion: { (trip, status) in
+      if let trip = trip {
+        self.trip = trip
+        self.presentPayment()
+      }
+      else {
+        self.payButton.isEnabled = true
+        WheelstreetViews.somethingWentWrongAlertView()
+      }
+
+    })
+    }
   }
   
   @IBAction func didTapGoToMaps(_ sender: Any) {
@@ -334,7 +410,7 @@ class EndTripViewController: UIViewController {
     }
   }
 
-  @IBAction func didTapHelpButton(_ sender: Any) {
+  @objc func help() {
     WheelstreetCommon.help()
   }
   
@@ -385,7 +461,11 @@ extension EndTripViewController: UITableViewDelegate {
 
 extension EndTripViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.trip.rent?.count ?? 0
+    guard let rent = self.trip.rent else {
+      return 0
+    }
+
+    return self.trip.bookedOn == nil ? rent.count : rent.count + 1
   }
 
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -395,7 +475,11 @@ extension EndTripViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell: FareDetailsTableViewCell = tableView.dequeReusableCell(forIndexPath: indexPath)
 
-    if let rent = self.trip.rent?[indexPath.row] {
+    if let bookeOn = self.trip.bookedOn, indexPath.row == 0 {
+      let rent = GORent(type: .bookedOn, rent: bookeOn, rate: 0, total: 0)
+       cell.configure(rent: rent)
+    }
+    else if let rent = self.trip.rent?[indexPath.row - 1] {
       cell.configure(rent: rent)
     }
 

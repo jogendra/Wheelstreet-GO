@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Mixpanel
 import AVFoundation
 
 class ScannerViewController: UIViewController {
@@ -43,16 +44,42 @@ class ScannerViewController: UIViewController {
         super.viewDidLoad()
         UISetups()
         captureDeviceSetup()
-    
-        self.navigationController?.title = "GO"
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-      super.viewWillAppear(animated)
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
 
-      UIApplication.makeNavigationBarTransparent()
+    view.endEditing(true)
+
+    UIApplication.makeNavigationBarTransparent()
+    WheelstreetViews.statusBarTo(color: .clear, style: .lightContent)
+    WheelstreetViews.requestCameraAcess(completion: { (bool) in
+      if bool {
+        self.captureSession?.startRunning()
+      }
+    })
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    UIApplication.navigationController().title = "GO"
+    UIApplication.makeNavigationBarTransparent()
+    WheelstreetViews.statusBarTo(color: .clear, style: .lightContent)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+    self.navigationItem.setRightBarButton(UIBarButtonItem(title: "Help", style: .plain, target: self, action: #selector(help(_:))), animated: true)
+  }
+
+  @objc func help(_ sender: Any) {
+    if let bike = self.tappedBike {
+      Mixpanel.mainInstance().track(event: GoMixPanelEvents.goScanCall, properties: ["Bike Reg No": bike.regNo])
     }
-    
+    else {
+      Mixpanel.mainInstance().track(event: GoMixPanelEvents.goScanCall)
+    }
+      WheelstreetCommon.help()
+    }
+
     func captureDeviceSetup() {
         captureDevice = AVCaptureDevice.default(for: .video)
         if let captureDevice = captureDevice {
@@ -97,6 +124,7 @@ class ScannerViewController: UIViewController {
     @IBAction func toggleFlash(_ sender: Any) {
         
         guard let captureDevice = captureDevice else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         if (captureDevice.hasTorch) {
@@ -119,6 +147,12 @@ class ScannerViewController: UIViewController {
     }
     
     @IBAction func didTapBikeIdManually(_ sender: Any) {
+      if let bike = self.tappedBike {
+        Mixpanel.mainInstance().track(event: GoMixPanelEvents.goQRCodeNotFound, properties: ["Bike Reg No": bike.regNo])
+      }
+      else {
+        Mixpanel.mainInstance().track(event: GoMixPanelEvents.goQRCodeNotFound)
+      }
         if let bikeIDVC = UIStoryboard.bikeIDVC() as? BikeIDViewController {
             bikeIDVC.tappedBike = self.tappedBike
           UIApplication.navigationController().pushViewController(bikeIDVC, animated: true)
@@ -128,8 +162,7 @@ class ScannerViewController: UIViewController {
     func proceedBike(bike: GoBike, statusCode: Int, goReading: GoReading) {
         if statusCode == 1 {
             if self.tappedBike != nil {
-              let enterKMVC = EnterKMViewController(nibName: "EnterKMViewController", bundle: nil, type: .start, bookingID: nil, scannedBike: self.tappedBike!)
-                enterKMVC.reading = goReading
+              let enterKMVC = EnterKMViewController(nibName: "EnterKMViewController", bundle: nil, type: .start, bookingID: nil, scannedBike: self.tappedBike!, reading: goReading)
               UIApplication.navigationController().pushViewController(enterKMVC, animated: true)
                 }
               else {
@@ -140,6 +173,7 @@ class ScannerViewController: UIViewController {
     
     func showBikeFareView(with bike: GoBike) {
         guard let bikeFareView = bikeFareView else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         bikeFareView.layer.opacity = 0.4
@@ -153,12 +187,8 @@ class ScannerViewController: UIViewController {
     }
     
     func handleScannedQR(for bikeId: String) {
-//        guard let currentLocation = Location.shared.currentLocation else {
-//            WheelstreetViews.bluredAlertView(title: "Error", message: "Please give access to location to proceed")
-//            return
-//        }
-        
-        let params: Dictionary<String, Any> = [GoKeys.bikeId: bikeId, "lat": 12.8951532, "lng": 77.6074797]
+        var params = Network.defaultParamas()
+        params[GoKeys.bikeId] = bikeId
         
         WheelstreetAPI.getScannedBike(params: params, completion: { goBike, parsedJSON, code, error in
             if error != nil {
@@ -203,6 +233,7 @@ extension ScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 //            return
 //        }
         guard let stringValue = metadataObject.stringValue else {
+            WheelstreetViews.somethingWentWrongAlertView()
             return
         }
         captureSession?.stopRunning()
@@ -226,7 +257,7 @@ extension ScannerViewController: BikeFareViewDelegate {
     }
     
     func didTapProceed() {
-        let enterKMVC = EnterKMViewController(nibName: "EnterKMViewController", bundle: nil, type: .start, bookingID: nil, scannedBike: self.scannedBike!, reading: self.bikeReading)
+      let enterKMVC = EnterKMViewController(nibName: "EnterKMViewController", bundle: nil, type: .start, bookingID: nil, scannedBike: self.scannedBike!, reading: self.bikeReading!)
       UIApplication.navigationController().pushViewController(enterKMVC, animated: true)
     }
     

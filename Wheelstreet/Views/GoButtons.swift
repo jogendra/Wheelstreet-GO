@@ -22,9 +22,9 @@ struct GoButtons {
     
     static let customerCareButtonWidth: CGFloat = 48.0
     
-    static let refreshButtonHeight: CGFloat = 48.0
+    static let refreshButtonHeight: CGFloat = 36.0
     
-    static let refreshButtonWidth: CGFloat = 48.0
+    static let refreshButtonWidth: CGFloat = 36.0
     
     static let unlockButtonHeight: CGFloat = 50.0
     
@@ -34,13 +34,13 @@ struct GoButtons {
     
     static let goButtonsShadowColor: CGColor = UIColor.black.cgColor
     
-    static let userbuttonTopAnchorConstant: CGFloat = 22.0
+    static let userbuttonTopAnchorConstant: CGFloat = 32
     
     static let userButtonLeadingAnchorConstant: CGFloat = 8.0
     
-    static let customerCareButtonBottomAnchorConstant: CGFloat = -8.0
+    static let customerCareButtonBottomAnchorConstant: CGFloat = -32.0
     
-    static let refreshButtonBottomAnchorConstant: CGFloat = -86.0
+    static let refreshButtonBottomAnchorConstant: CGFloat = -16.0
     
     static let buttonsFontSize: CGFloat = 17.0
     

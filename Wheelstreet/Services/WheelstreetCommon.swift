@@ -83,21 +83,38 @@ class WheelstreetCommon {
     let minutes = Int((interval%3600)/60)
     let seconds = Int((interval%3600)%60)
 
-    return "\(hours):\(minutes):\(seconds)"
+    let hString = hours >= 0 && 9 >= hours ? "0\(hours)" : "\(hours)"
+    let mString = minutes >= 0 && 9 >= minutes ? "0\(minutes)" : "\(minutes)"
+    let sString = seconds >= 0 && 9 >= seconds ? "0\(seconds)" : "\(seconds)"
+
+    return hString + ":" + mString + ":" + sString
   }
 
-  static func prettyStringFromTimeInterval(interval: TimeInterval, date: Date) -> String {
-    let date = Date(timeInterval: interval, since: date)
-    let dateFormatter = DateFormatter()
-    if interval/3600 >= 1 {
-      dateFormatter.dateFormat = "HH 'h' mm 'm'"
+  static func prettyStringFromTimeInterval(interval: Int) -> String {
+    let hours = Int(interval/3600)
+    let minutes = Int((interval%3600)/60)
+    let seconds = Int((interval%3600)%60)
+
+    var string = ""
+    if hours >= 1 {
+      let hString = minutes < 1 && seconds < 1 ? (hours == 1 ? "hour" : "hours") : "h"
+      string += "\(hours) " + hString + " "
     }
-    else {
-      dateFormatter.dateFormat = "mm 'm' ss 's'"
+
+    if minutes >= 1 {
+      let mString = hours < 1 && seconds < 1 ? "min" : "m"
+      string += "\(minutes) " + mString + " "
     }
-    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-    return dateFormatter.string(from: date)
+    if seconds >= 1 && hours < 1 {
+      let sString = minutes < 1 && hours < 1 ? "seconds" : "s"
+      string += "\(seconds) " + sString
+    }
+
+    if string == "" {
+      string = "1 min"
+    }
+
+    return string
   }
 
 
@@ -105,13 +122,7 @@ class WheelstreetCommon {
   static func googleMapsDirections(fromLocation: GOLocation? = nil, toLocation location: GOLocation, completionHandler completion: ((Bool) -> Swift.Void)? = nil, cancelationHandler cancelation: @escaping(() -> Swift.Void)) {
 
     let googleMapsURLScheme = "comgooglemaps://"
-
-    guard let googleMapsAppURL = URL(string: googleMapsURLScheme),
-      UIApplication.shared.canOpenURL(googleMapsAppURL)
-      else {
-        cancelation()
-        return
-    }
+    let googleMapsAppURL = URL(string: googleMapsURLScheme)
 
     var startingPoint = "saddr="
     if let fromLocation = fromLocation {
@@ -126,15 +137,25 @@ class WheelstreetCommon {
       return
     }
 
-    UIApplication.shared.open(directionsURL, options: ["":""], completionHandler: completion)
+    if UIApplication.shared.canOpenURL(googleMapsAppURL!) {
+      UIApplication.shared.open(directionsURL, options: ["":""], completionHandler: completion)
+    }
+    else {
+      WheelstreetViews.alertView(title: "Google Maps Not Installed", message: "Install Google Maps to Access GO")
+    }
   }
 
   static func help() {
-    let  goCustomerCareMobileNumber = "+91-7338-259-460"
+    var goCustomerCareMobileNumber = "+91-8088400500"
+
+    if let helpline = UserDefaults.standard.value(forKey: GoKeys.help) as? String {
+      goCustomerCareMobileNumber = helpline
+    }
     guard let numberURL = URL(string: "tel://" + goCustomerCareMobileNumber) else {
       WheelstreetViews.somethingWentWrongAlertView()
       return
     }
+
     UIApplication.shared.open(numberURL)
   }
   

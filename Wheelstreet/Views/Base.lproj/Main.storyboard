@@ -286,7 +286,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4la-cG-hEg">
-                                <rect key="frame" x="329" y="24" width="27" height="29"/>
+                                <rect key="frame" x="329" y="53" width="27" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="4la-cG-hEg" secondAttribute="height" multiplier="27:29" id="Lp4-sa-nL0"/>
                                 </constraints>
@@ -334,7 +334,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:48" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwP-8s-Kax">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:48" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwP-8s-Kax">
                                 <rect key="frame" x="162" y="518" width="52" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -367,9 +367,9 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="4la-cG-hEg" firstAttribute="top" secondItem="u6v-vY-O3e" secondAttribute="top" constant="4" id="0Av-QB-Peo"/>
                             <constraint firstItem="dwU-BI-4VX" firstAttribute="centerY" secondItem="Spb-S4-L5i" secondAttribute="centerY" id="0Ka-VV-jUU"/>
                             <constraint firstItem="nwP-8s-Kax" firstAttribute="leading" secondItem="u6v-vY-O3e" secondAttribute="leading" constant="162" id="4Er-Iy-iu2"/>
+                            <constraint firstItem="u6v-vY-O3e" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="nwP-8s-Kax" secondAttribute="trailing" constant="4" id="4fF-ve-9wc"/>
                             <constraint firstItem="nwP-8s-Kax" firstAttribute="centerX" secondItem="u6v-vY-O3e" secondAttribute="centerX" id="9Ca-BP-Mbh"/>
                             <constraint firstItem="eaF-mO-xpp" firstAttribute="leading" secondItem="u6v-vY-O3e" secondAttribute="leading" constant="91" id="HvN-wH-A2i"/>
                             <constraint firstItem="Aed-Ed-2mp" firstAttribute="leading" secondItem="u6v-vY-O3e" secondAttribute="leading" constant="140" id="K4M-m2-K0q"/>
@@ -388,6 +388,7 @@
                             <constraint firstItem="eaF-mO-xpp" firstAttribute="top" secondItem="E27-EH-NUA" secondAttribute="bottom" constant="29" id="kEJ-vk-4DU"/>
                             <constraint firstItem="u6v-vY-O3e" firstAttribute="trailing" secondItem="4la-cG-hEg" secondAttribute="trailing" constant="19" id="mG1-Ef-zHQ"/>
                             <constraint firstItem="Aed-Ed-2mp" firstAttribute="top" secondItem="Spb-S4-L5i" secondAttribute="bottom" constant="30" id="nj2-8Q-GTl"/>
+                            <constraint firstItem="4la-cG-hEg" firstAttribute="top" secondItem="E27-EH-NUA" secondAttribute="top" id="rB5-nj-tk9"/>
                             <constraint firstItem="E27-EH-NUA" firstAttribute="top" secondItem="u6v-vY-O3e" secondAttribute="top" constant="33" id="rZK-sN-0lb"/>
                             <constraint firstItem="u6v-vY-O3e" firstAttribute="trailing" secondItem="Aed-Ed-2mp" secondAttribute="trailing" constant="135" id="sF9-MK-3tb"/>
                             <constraint firstItem="E27-EH-NUA" firstAttribute="leading" secondItem="u6v-vY-O3e" secondAttribute="leading" constant="133" id="wIa-wj-fdU"/>
