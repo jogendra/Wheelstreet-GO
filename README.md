@@ -27,6 +27,9 @@ GO by Wheelstreet is going to change the way India Commutes. One of its kind in 
 2. Run the following command to install all the third-party libraries.
 ```pod install```
 
+### Download
+App is available on App Store. You can donwload on your iOS device from [here](https://itunes.apple.com/us/app/go-by-wheelstreet/id1330576017?mt=8).
+
 ### Coding standards
 
 Followed the following guides and code standards:
