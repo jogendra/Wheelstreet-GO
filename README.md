@@ -1,4 +1,4 @@
-Wheelstreet Vega
+Wheelstreet GO
 =================
 
 ### Installation
