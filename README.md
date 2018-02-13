@@ -29,6 +29,8 @@ GO by Wheelstreet is going to change the way India Commutes. One of its kind in 
 3. Open in Xcode
 ```open Wheelstreet.xcworkspace```
 
+**Note: This is app is officially developed for Wheelstreet Inc, Banglore. Chances are it wll not run or get crashed due to change in theirs APIs and other things.**
+
 ### Download
 App is available on App Store. You can donwload on your iOS device from [here](https://itunes.apple.com/us/app/go-by-wheelstreet/id1330576017?mt=8).
 
