@@ -38,7 +38,3 @@ App is available on App Store. You can donwload on your iOS device from [here](h
 
 Followed the following guides and code standards:
 [Swift Style Guide](https://github.com/linkedin/swift-style-guide)
-
-### Contact
-
-For any further details contact [jogendra.singh.jog@gmail.com](mailto:jogendra.singh.jog@gmail.com)
