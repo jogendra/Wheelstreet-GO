@@ -1,6 +1,8 @@
 Wheelstreet GO
 =================
-GO by Wheelstreet is going to change the way India Commutes. One of its kind in India, Dockless scooter rentals. A Multi-feature app to make your everyday travel across the city beautifully hasslefree. 
+GO by Wheelstreet is going to change the way India Commutes. One of its kind in India, Dockless scooter rentals. A Multi-feature app to make your everyday travel across the city beautifully hasslefree.
+
+### Screenshots
 
 ### How it works:
 - Open the app and spot any GO bike on the map.
