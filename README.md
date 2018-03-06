@@ -5,12 +5,12 @@ GO by Wheelstreet is going to change the way India Commutes. One of its kind in 
 ### Screenshots
 <table>
   <tr>
-    <td><img src="Screenshots/screen1Go.jpg" width="370"></td>
-    <td><img src="Screenshots/screen2Go.jpg" width="370"></td>
+    <td><img src="Screenshots/screen1Go.jpg" width="320"></td>
+    <td><img src="Screenshots/screen2Go.jpg" width="320"></td>
   </tr>
   <tr>
-    <td><img src="Screenshots/screen3Go.jpg" width="370"></td>
-    <td><img src="Screenshots/screen5Go.jpg" width="370"></td>
+    <td><img src="Screenshots/screen3Go.jpg" width="320"></td>
+    <td><img src="Screenshots/Screen5Go.jpg" width="320"></td>
   </tr>
 </table>
 
