@@ -3,6 +3,18 @@ Wheelstreet GO
 GO by Wheelstreet is going to change the way India Commutes. One of its kind in India, Dockless scooter rentals. A Multi-feature app to make your everyday travel across the city beautifully hasslefree.
 
 ### Screenshots
+<table>
+  <tr>
+    <td><img src="docs/_static/Screen1.png" height = "480" width="270"></td>
+    <td><img src="docs/_static/Screen2.png" height = "480" width="270"></td>
+    <td><img src="docs/_static/Screen3.png" height = "480" width="270"></td>
+  </tr>
+  <tr>
+    <td><img src="docs/_static/Screen4.png" height = "480" width="270"></td>
+    <td><img src="docs/_static/Screen5.png" height = "480" width="270"></td>
+    <td><img src="docs/_static/Screen6.png" height = "480" width="270"></td>
+  </tr>
+</table>
 
 ### How it works:
 - Open the app and spot any GO bike on the map.
