@@ -35,11 +35,17 @@ GO by Wheelstreet is going to change the way India Commutes. One of its kind in 
 ### Installation
 
 1. Clone the repo via git clone command.
-```https://github.com/imjog/Wheelstreet-GO.git```
+```
+https://github.com/imjog/Wheelstreet-GO.git
+```
 2. Run the following command to install all the third-party libraries.
-```pod install```
+```
+pod install
+```
 3. Open in Xcode
-```open Wheelstreet.xcworkspace```
+```
+open Wheelstreet.xcworkspace
+```
 
 **Note: This is app is officially developed for Wheelstreet Inc, Banglore. Chances are it wll not run or get crashed due to change in theirs APIs and other things.**
 
