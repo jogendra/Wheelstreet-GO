@@ -1,5 +1,7 @@
-<img src="/docs/_static/phimpme-logo.png" align="left" hspace="1" vspace="1">
+<img src="https://user-images.githubusercontent.com/20956124/39676407-01805a38-5188-11e8-86e6-b7f86cf862ce.jpg" align="left" hspace="1" vspace="1" height="100" width="100">
+
 # Wheelstreet GO
+
 GO by Wheelstreet is going to change the way India Commutes. One of its kind in India, Dockless scooter rentals. A Multi-feature app to make your everyday travel across the city beautifully hasslefree.
 
 ---
