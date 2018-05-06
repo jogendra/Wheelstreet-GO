@@ -1,6 +1,8 @@
-Wheelstreet GO
-=================
+<img src="/docs/_static/phimpme-logo.png" align="left" hspace="1" vspace="1">
+# Wheelstreet GO
 GO by Wheelstreet is going to change the way India Commutes. One of its kind in India, Dockless scooter rentals. A Multi-feature app to make your everyday travel across the city beautifully hasslefree.
+
+---
 
 ### Screenshots
 <table>
