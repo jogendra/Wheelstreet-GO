@@ -1,4 +1,4 @@
-<img src="https://user-images.githubusercontent.com/20956124/39676407-01805a38-5188-11e8-86e6-b7f86cf862ce.jpg" align="left" hspace="1" vspace="1" height="100" width="100">
+<img src="https://user-images.githubusercontent.com/20956124/39676407-01805a38-5188-11e8-86e6-b7f86cf862ce.jpg" align="left" hspace="1" vspace="1" height="150" width="150">
 
 # Wheelstreet GO
 
